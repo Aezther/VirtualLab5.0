@@ -13,7 +13,6 @@ public class BatchUploader : MonoBehaviour
     public TextAsset fileToUpload;
 
     public string path; //used to search for the file
-    public string itemID; //name of the file, production order, tool id
     string filePath = ""; //used to create the path and file for heatmap
 
     [Header("UserList Data Scriptable")]
@@ -49,7 +48,6 @@ public class BatchUploader : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        OpenExplorer();
     }
 
     public void CheckCSV()
@@ -148,6 +146,12 @@ public class BatchUploader : MonoBehaviour
 
     public void LoadCSV()
     {
+        if (this.userData == null)
+        {
+            Debug.Log("Scriptable object for uploaded file not found");
+            return;
+        }
+
         this.userData.userList.user = new UserData.User[nUsers]; // create user list array in scriptable 
 
         for (int i = 0; i < nUsers; i++)
@@ -174,6 +178,12 @@ public class BatchUploader : MonoBehaviour
             //update filepath 
             filePath = path;
             Debug.Log(filePath);
+            CheckCSV(); //verify file content
+            ReadCSV(); // read data
+        }
+        else
+        {
+            Debug.Log("Invalid path");
         }
     }
 }
