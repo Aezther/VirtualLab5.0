@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-using static UnityEditor.Progress;
+//using static UnityEditor.Progress;
 using System.IO;
-using UnityEditor;
+//using UnityEditor;
 using Unity.VisualScripting;
 
 public class BatchUploader : MonoBehaviour
@@ -172,18 +172,18 @@ public class BatchUploader : MonoBehaviour
 
     public void OpenExplorer()
     {
-        path = EditorUtility.OpenFilePanel("Select Part", "", "");
-        if (path != null)
-        {
-            //update filepath 
-            filePath = path;
-            Debug.Log(filePath);
-            CheckCSV(); //verify file content
-            ReadCSV(); // read data
-        }
-        else
-        {
-            Debug.Log("Invalid path");
-        }
+        //path = EditorUtility.OpenFilePanel("Select Part", "", "");
+        //if (path != null)
+        //{
+        //    //update filepath 
+        //    filePath = path;
+        //    Debug.Log(filePath);
+        //    CheckCSV(); //verify file content
+        //    ReadCSV(); // read data
+        //}
+        //else
+        //{
+        //    Debug.Log("Invalid path");
+        //}
     }
 }

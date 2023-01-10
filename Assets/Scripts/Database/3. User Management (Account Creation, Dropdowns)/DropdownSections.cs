@@ -7,7 +7,7 @@ using System.IO;
 using TMPro;
 using UnityEngine.UI;
 using System;
-using static UnityEditor.ShaderData;
+//using static UnityEditor.ShaderData;
 
 public class DropdownSections : MonoBehaviour
 {
@@ -23,9 +23,11 @@ public class DropdownSections : MonoBehaviour
 
 
     }
-    void Update() {
+    void Update() 
+    {
     }
-    public void Display() {
+    public void Display() 
+    {
 
         dropdownSection.ClearOptions();
         string conn = "URI=file:" + Application.streamingAssetsPath + "/Database/" + "/VirtualDB.db"; //path to database, will read anything inside assets
