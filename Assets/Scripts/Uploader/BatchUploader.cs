@@ -2,13 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-//using static UnityEditor.Progress;
 using System.IO;
-//using UnityEditor;
 using Unity.VisualScripting;
 using SFB;
 using UnityEngine.UI;
 using TMPro;
+using Mono.Data.Sqlite;
+using System.Data;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using static System.Collections.Specialized.BitVector32;
 
 public class BatchUploader : MonoBehaviour
 {
@@ -21,11 +23,13 @@ public class BatchUploader : MonoBehaviour
     string filePath = ""; //used to create the path and file for heatmap
 
     [Header("UserList Data Scriptable")]
-    [SerializeField] UserData userData;
+    [SerializeField] UserData loadedData;
 
 
     private int nColumn = 7; // numbe of column in excel file
     private int nUsers = 0; // number of registered users
+    private string connectionString;
+    private string sqlQuery;
 
 
     [System.Serializable]
@@ -53,6 +57,7 @@ public class BatchUploader : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        connectionString = "URI=file:" + Application.streamingAssetsPath + "/Database/" + "/VirtualDB.db";
     }
 
     public void CheckCSV()
@@ -151,39 +156,41 @@ public class BatchUploader : MonoBehaviour
 
     public void LoadCSV()
     {
-        if (this.userData == null)
+        if (this.loadedData == null)
         {
             Debug.Log("Scriptable object for uploaded file not found");
             return;
         }
 
-        this.userData.userList.user = new UserData.User[nUsers]; // create user list array in scriptable 
+        this.loadedData.userList.user = new UserData.User[nUsers]; // create user list array in scriptable 
 
         for (int i = 0; i < nUsers; i++)
         {
             //SAVING DATA TO SCRIPTABLE OBJECT
-            this.userData.userList.user[i] = new UserData.User();
+            this.loadedData.userList.user[i] = new UserData.User();
 
             // transfer data per parameter
-            this.userData.userList.user[i].ID = uploadedUserList.user[i].ID;
-            this.userData.userList.user[i].username = uploadedUserList.user[i].username;
-            this.userData.userList.user[i].password = uploadedUserList.user[i].password;
-            this.userData.userList.user[i].firstName = uploadedUserList.user[i].firstName;
-            this.userData.userList.user[i].middleName = uploadedUserList.user[i].middleName;
-            this.userData.userList.user[i].lastName = uploadedUserList.user[i].lastName;
-            this.userData.userList.user[i].section = uploadedUserList.user[i].section;
+            this.loadedData.userList.user[i].ID = uploadedUserList.user[i].ID;
+            this.loadedData.userList.user[i].username = uploadedUserList.user[i].username;
+            this.loadedData.userList.user[i].password = uploadedUserList.user[i].password;
+            this.loadedData.userList.user[i].firstName = uploadedUserList.user[i].firstName;
+            this.loadedData.userList.user[i].middleName = uploadedUserList.user[i].middleName;
+            this.loadedData.userList.user[i].lastName = uploadedUserList.user[i].lastName;
+            this.loadedData.userList.user[i].section = uploadedUserList.user[i].section;
         }
+
+        UploadLoadeDataToSQL();
     }
 
     public void OpenExplorer()
     {
         // Open file with filter
-        var extensions = new[] 
+        var extensions = new[]
         {
             new ExtensionFilter("CSV", "csv" ),
         };
-        
-        path = string.Join("",StandaloneFileBrowser.OpenFilePanel("Open File", "", extensions, true));
+
+        path = string.Join("", StandaloneFileBrowser.OpenFilePanel("Open File", "", extensions, true));
         //path = EditorUtility.OpenFilePanel("Select Part", "", "");
         if (!string.IsNullOrEmpty(path))
         {
@@ -217,5 +224,37 @@ public class BatchUploader : MonoBehaviour
 
 
         }
+    }
+
+    public void UploadLoadeDataToSQL()
+    {
+        using (IDbConnection dbConnection = new SqliteConnection(connectionString))
+        {
+            dbConnection.Open();
+            // create queries
+            using (IDbCommand dbCmd = dbConnection.CreateCommand())
+            {
+                for (int i = 0; i < loadedData.userList.user.Length; i++)
+                {
+                    UserData.User studentData = loadedData.userList.user[i];
+
+                    string sqlQuery = "INSERT INTO StudentsTBL (StudentID, Username, Password, Firstname, Middlename, Lastname, Section) " +
+
+                   "VALUES ( '" + studentData.ID + "','" +
+                                  studentData.username + "','" +
+                                  studentData.password + "','" +
+                                  studentData.firstName + "','" +
+                                  studentData.middleName + "','" +
+                                  studentData.lastName + "','" +
+                                  studentData.section + "');";
+
+                    dbCmd.CommandText = sqlQuery;
+                    dbCmd.ExecuteScalar();
+                }
+            }
+            dbConnection.Close();
+            Debug.Log("Data has been uploaded to DATABASE");
+        }
+
     }
 }
