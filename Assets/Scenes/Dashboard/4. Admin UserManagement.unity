@@ -1115,7 +1115,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 206542974}
   m_OnClick:
     m_PersistentCalls:
@@ -2734,7 +2734,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d170cdd8156b7540996131630ff8104, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fileToUpload: {fileID: 0}
+  filename: {fileID: 911622120}
+  uploadButton: {fileID: 206542973}
   path: 
   userData: {fileID: 11400000, guid: b466cd932731abd42afabda325a63949, type: 2}
   uploadedUserList:
@@ -3637,7 +3638,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 25.631033, y: 0.000020125217}
+  m_AnchoredPosition: {x: 25.631033, y: 0.00022002019}
   m_SizeDelta: {x: -25.631, y: 326.44}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &466073896
@@ -5483,7 +5484,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1153373686}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.9999957
+  m_Size: 0.9999643
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -8776,7 +8777,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: ...
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -8803,8 +8804,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 29.8
-  m_fontSizeBase: 29.8
+  m_fontSize: 24
+  m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -8821,7 +8822,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
+  m_overflowMode: 1
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
@@ -8839,7 +8840,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -24.14978, w: 0}
+  m_margin: {x: 0, y: 0, z: 9.407593, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0

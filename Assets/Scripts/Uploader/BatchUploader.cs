@@ -6,11 +6,16 @@ using System;
 using System.IO;
 //using UnityEditor;
 using Unity.VisualScripting;
+using SFB;
+using UnityEngine.UI;
+using TMPro;
 
 public class BatchUploader : MonoBehaviour
 {
     [Header("Excel File")]
-    public TextAsset fileToUpload;
+    [SerializeField] TextMeshProUGUI filename;
+    [SerializeField] Button uploadButton;
+
 
     public string path; //used to search for the file
     string filePath = ""; //used to create the path and file for heatmap
@@ -172,18 +177,45 @@ public class BatchUploader : MonoBehaviour
 
     public void OpenExplorer()
     {
+        // Open file with filter
+        var extensions = new[] 
+        {
+            new ExtensionFilter("CSV", "csv" ),
+        };
+        
+        path = string.Join("",StandaloneFileBrowser.OpenFilePanel("Open File", "", extensions, true));
         //path = EditorUtility.OpenFilePanel("Select Part", "", "");
-        //if (path != null)
-        //{
-        //    //update filepath 
-        //    filePath = path;
-        //    Debug.Log(filePath);
-        //    CheckCSV(); //verify file content
-        //    ReadCSV(); // read data
-        //}
-        //else
-        //{
-        //    Debug.Log("Invalid path");
-        //}
+        if (!string.IsNullOrEmpty(path))
+        {
+            //update filepath 
+            filePath = path;
+            Debug.Log(filePath);
+            filename.text = Path.GetFileName(filePath);
+
+            if (System.IO.File.Exists(filePath))
+            {
+                // File exists
+                CheckCSV(); //verify file content
+                ReadCSV(); // read data
+                uploadButton.interactable = true;
+            }
+            else
+            {
+                // File does not exist
+                Debug.Log("No file selected");
+                uploadButton.interactable = false;
+                filename.text = " ";
+
+
+            }
+        }
+        else
+        {
+            Debug.Log("Invalid path");
+            filename.text = " ";
+            uploadButton.interactable = false;
+
+
+        }
     }
 }
