@@ -37,6 +37,7 @@ public class CanvasSampleOpenFileImage : MonoBehaviour, IPointerDownHandler {
         button.onClick.AddListener(OnClick);
     }
 
+    [System.Obsolete]
     private void OnClick() {
         var paths = StandaloneFileBrowser.OpenFilePanel("Title", "", ".png", false);
         if (paths.Length > 0) {

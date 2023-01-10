@@ -45,6 +45,7 @@ public class CanvasSampleOpenFileText : MonoBehaviour, IPointerDownHandler {
     }
 #endif
 
+    [System.Obsolete]
     private IEnumerator OutputRoutine(string url) {
         var loader = new WWW(url);
         yield return loader;
