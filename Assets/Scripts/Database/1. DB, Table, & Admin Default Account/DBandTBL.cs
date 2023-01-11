@@ -15,6 +15,7 @@ public class DBandTBL : MonoBehaviour
         CreateStudentsTBL();
         CreateTeachersTBL();
         CreateSectionsTBL();
+        CreateStudentsSessionsTBL();
     }
 
     //CREATE DATABASE named (VirtualDB)
@@ -103,6 +104,25 @@ public class DBandTBL : MonoBehaviour
         dbconn.Open(); //open connection to the database
         IDbCommand dbcmd = dbconn.CreateCommand();
         string sqlQuery = "CREATE TABLE IF NOT EXISTS SectionsTBL (SectionID INTEGER PRIMARY KEY AUTOINCREMENT, Sections text NOT NULL UNIQUE);";
+
+        Debug.Log("Sections Table Created!");
+        dbcmd.CommandText = sqlQuery;
+        IDataReader reader = dbcmd.ExecuteReader();
+        reader.Close();
+        reader = null;
+        dbcmd.Dispose();
+        dbcmd = null;
+        dbconn.Close();
+        dbconn = null;
+    }
+
+    public void CreateStudentsSessionsTBL(){
+        string conn = "URI=file:" + Application.streamingAssetsPath + "/Database/" + "/VirtualDB.db";
+        IDbConnection dbconn;//established a connection
+        dbconn = (IDbConnection)new SqliteConnection(conn);
+        dbconn.Open(); //open connection to the database
+        IDbCommand dbcmd = dbconn.CreateCommand();
+        string sqlQuery = "CREATE TABLE IF NOT EXISTS StudentSessionsTBL (SessionID INTEGER PRIMARY KEY AUTOINCREMENT, Action text, Time text, StudentID INTEGER, FOREIGN KEY (StudentID) REFERENCES StudentsTBL (StudentID));";
 
         Debug.Log("Sections Table Created!");
         dbcmd.CommandText = sqlQuery;

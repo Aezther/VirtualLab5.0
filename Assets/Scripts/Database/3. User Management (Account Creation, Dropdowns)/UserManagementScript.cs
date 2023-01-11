@@ -138,6 +138,7 @@ public class UserManagementScript : MonoBehaviour {
                 if (Password.text == ConfirmPassword.text) {
                     PasswordDoNotMatch.SetActive(false);
                 }
+                //condition for teachers
                 if (!string.IsNullOrEmpty(UserID.text) && !string.IsNullOrEmpty(Password.text) && !string.IsNullOrEmpty(ConfirmPassword.text)
                     &&  !string.IsNullOrEmpty(FirstName.text) && !string.IsNullOrEmpty(LastName.text) && Password.text == ConfirmPassword.text && dropdownUserType.SelectedUserType == ("Teacher")) {
                     
@@ -159,9 +160,11 @@ public class UserManagementScript : MonoBehaviour {
 
                     Debug.Log("Teacher Account create successfully");
                 }
-
+                
+                //condition for students
                 if(!string.IsNullOrEmpty(UserID.text) && !string.IsNullOrEmpty(Password.text) && !string.IsNullOrEmpty(ConfirmPassword.text) 
-                    && !string.IsNullOrEmpty(FirstName.text) && !string.IsNullOrEmpty(Password.text) && dropdownUserType.SelectedUserType == ("Student")) {
+                    && !string.IsNullOrEmpty(FirstName.text) && !string.IsNullOrEmpty(LastName.text) && Password.text == ConfirmPassword.text  && dropdownUserType.SelectedUserType == ("Student")) {
+                    
                     string sqlQuery = "INSERT INTO StudentsTBL (StudentID, Username, Password, Firstname, Middlename, Lastname, Section) " +
                         "VALUES ( '" + UserID.text + "','" + UserName.text + "','" + Password.text + "','" + FirstName.text + "','" 
                         + MiddleName.text + "','" + LastName.text + "','" + dropdownSections.SelectedSection + "');";
