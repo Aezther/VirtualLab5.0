@@ -22,6 +22,11 @@ public class DisplayDBValues : MonoBehaviour
     [SerializeField] GameObject logsContentParent;
     private TextMeshProUGUI[] logsTextCompList;
 
+    [Header("Assessment Values")]
+    [SerializeField] GameObject ARheaderPrefab;
+    [SerializeField] GameObject ARcontentParent;
+    private TextMeshProUGUI[] ARTextCompList;
+
 
 
 
@@ -113,6 +118,50 @@ public class DisplayDBValues : MonoBehaviour
                         logsTextCompList[2].text = reader.GetString(2);
                         logsTextCompList[3].text = reader.GetString(3);
                         logsTextCompList[4].text = reader.GetString(4);
+                    }
+                    reader.Close();
+
+                }
+                dbCmd.ExecuteNonQuery();
+            }
+            dbConnection.Close();
+        }
+    }
+
+    public void DisplayARToScrollView()
+    {
+        // delete all child 
+        foreach (Transform child in ARcontentParent.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        using (IDbConnection dbConnection = new SqliteConnection(connectionString))
+        {
+            dbConnection.Open();
+            using (IDbCommand dbCmd = dbConnection.CreateCommand())
+            {
+                string sqlQuery = "SELECT Lastname, Firstname, Section, Subject, Score FROM ScoresTBL  INNER JOIN StudentsTBL ON StudentsTBL.StudentID = ScoresTBL.StudentID";
+                dbCmd.CommandText = sqlQuery;
+                using (IDataReader reader = dbCmd.ExecuteReader())
+                {
+                    // reinstantiate all child
+                    while (reader.Read())
+                    {
+                        // one loop = 1 user
+                        Debug.Log(reader.GetString(0) + " " + reader.GetString(1) + " " + reader.GetString(2) + " " + reader.GetString(3) + " " + reader.GetString(4));
+                        // create prefab
+                        // modify value
+                        GameObject userHeader = GameObject.Instantiate(ARheaderPrefab, ARcontentParent.transform);
+
+                        ARTextCompList = userHeader.gameObject.GetComponentsInChildren<TextMeshProUGUI>();
+
+                        Debug.Log(textCompList[0].gameObject.name);
+                        ARTextCompList[0].text = reader.GetString(0);
+                        ARTextCompList[1].text = reader.GetString(1);
+                        ARTextCompList[2].text = reader.GetString(2);
+                        ARTextCompList[3].text = reader.GetString(3);
+                        ARTextCompList[4].text = reader.GetInt32(4).ToString();
                     }
                     reader.Close();
 
