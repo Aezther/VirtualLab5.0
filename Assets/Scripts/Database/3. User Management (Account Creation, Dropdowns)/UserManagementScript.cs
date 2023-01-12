@@ -49,6 +49,9 @@ public class UserManagementScript : MonoBehaviour {
     private string connectionString;
     private string sqlQuery;
 
+
+
+
     void Awake() { //INITIALIZING REFERENCES TO ACCESS SCRIPTS IN ANOTHER OBJECT
         dropdownUserType = DDUserType.GetComponent<DropdownUserType>(); // 3rd 
         dropdownSections = DDSection.GetComponent<DropdownSections>(); // 3rd
@@ -249,6 +252,8 @@ public class UserManagementScript : MonoBehaviour {
             
         }
     }
+
+
 }
 
 
