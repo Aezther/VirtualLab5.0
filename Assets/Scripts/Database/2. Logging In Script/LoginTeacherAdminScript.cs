@@ -27,7 +27,7 @@ public class LoginTeacherAdminScript : MonoBehaviour
         IDataReader reader = dbcmd.ExecuteReader();
         while (reader.Read()) {
             if (reader["Username"].Equals(userInput.text) && reader["Password"].Equals(passInput.text)) {
-                StartCoroutine(LoadScenes("3. Admin Dashboard"));
+                StartCoroutine(LoadScenes("6. Admin Dashboard"));
 
                 Debug.Log("Successful Login! Welcome! ");
             }
@@ -40,7 +40,27 @@ public class LoginTeacherAdminScript : MonoBehaviour
         dbconn = null;
     }
     public void LoginTeacher() {
+        string conn = "URI=file:" + Application.streamingAssetsPath + "/Database/" + "/VirtualDB.db"; //path to database, will read anything inside assets
+        IDbConnection dbconn;//established a connection
+        dbconn = (IDbConnection)new SqliteConnection(conn);
+        dbconn.Open(); //open connection to the database
+        IDbCommand dbcmd = dbconn.CreateCommand();
+        string sqlQuery = "SELECT Username, Password FROM TeachersTBL;";
+        dbcmd.CommandText = sqlQuery;
+        IDataReader reader = dbcmd.ExecuteReader();
+        while (reader.Read()) {
+            if (reader["Username"].Equals(userInput.text) && reader["Password"].Equals(passInput.text)) {
+                StartCoroutine(LoadScenes("3. TeacherDashboard"));
 
+                Debug.Log("Successful Login! Welcome! ");
+            }
+        }
+        reader.Close();
+        reader = null;
+        dbcmd.Dispose();
+        dbcmd = null;
+        dbconn.Close();
+        dbconn = null;
     }
     IEnumerator LoadScenes(string SceneIndex) //to control the speed of the transition
 {

@@ -30,6 +30,7 @@ public class DisplayDBValues : MonoBehaviour
     {
         connectionString = "URI=file:" + Application.streamingAssetsPath + "/Database/" + "/VirtualDB.db";
         DisplayUsersToScrollView();
+        DisplayLogsToScrollView();
 
     }
 

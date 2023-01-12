@@ -26,13 +26,50 @@ public class FadeSceneChanger : MonoBehaviour
     public void btnLogoutToLogin() {
         StartCoroutine(LoadScenes("2. Login Screen"));
     }
+
+    public void btnLessonsToLesson(){
+        StartCoroutine(LoadScenes("7. Lessons"));
+    }
+    public void btnCreateAccountToUserManagement(){
+        StartCoroutine(LoadScenes("4. Teacher UserManagement"));
+    }
+    //3.1 LESSONS
+    public void btnReturnToStudentDash(){
+        StartCoroutine(LoadScenes("3. TeacherDashboard"));
+    }
+    public void btnMicroscopeToMicroscopeLesson(){
+        StartCoroutine(LoadScenes("Mircroscope lesson"));
+    }
+    //3.2 LESSON (MICROSCOPE)
+    public void btnReturnToLesson(){
+        StartCoroutine(LoadScenes("7. Lessons"));
+    }
+    
+    //4. SIMULATIONS
+    public void btnSimulationToSimulation(){
+        StartCoroutine(LoadScenes("5. Simulations"));
+    }
+    //4.1
+    public void btnROBOSimtoSimulation(){
+        StartCoroutine(LoadScenes("5. Simulations"));
+    }
+    public void btnDistanceAndDisplacement(){
+        StartCoroutine(LoadScenes("RoboDistance"));
+    }
     //4. ADMIN DASHBOARD
     public void btnUserManagementToAdminCreateTeacherAccount() {
         StartCoroutine(LoadScenes("4. Admin UserManagement"));
     }
-    //5. USER MANAGEMENT
+    // TEACHER USER MANAGEMENT
+    public void btnHomeToTeacherDashboard(){
+        StartCoroutine(LoadScenes("3. TeacherDashboard"));
+    }
+    public void btnUsermanagementToTeacherUsermanagement(){
+        StartCoroutine(LoadScenes("4. Teacher UserManagement"));
+    }
+    //5. ADMIN USER MANAGEMENT
     public void btnHomeToAdminDashboard() {
-        StartCoroutine(LoadScenes("3. Admin Dashboard"));
+        StartCoroutine(LoadScenes("6. Admin Dashboard"));
     }
     
     IEnumerator LoadScenes(string SceneIndex) //To control the speed of the transition

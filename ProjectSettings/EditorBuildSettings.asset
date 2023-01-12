@@ -12,9 +12,30 @@ EditorBuildSettings:
     path: Assets/Scenes/Dashboard/2. Login Screen.unity
     guid: b14a6557c3d1d4f4583e0492f87b25fe
   - enabled: 1
-    path: Assets/Scenes/Dashboard/3. Admin Dashboard.unity
+    path: Assets/Scenes/Dashboard/3. TeacherDashboard.unity
     guid: 2005345bd0efb194a9a665c64f37427c
   - enabled: 1
     path: Assets/Scenes/Dashboard/4. Admin UserManagement.unity
     guid: fc39d9b1e3a47c646935470e0ede34d3
+  - enabled: 1
+    path: Assets/Scenes/Dashboard/6. Admin Dashboard.unity
+    guid: c03aea40bbc7a0d44a9bbf1a7947af34
+  - enabled: 1
+    path: Assets/Scenes/Dashboard/7. Lessons.unity
+    guid: bca22c64a3b144643ae7c3bf42fa1862
+  - enabled: 1
+    path: Assets/Scenes/Dashboard/5. Simulations.unity
+    guid: 274400d3dcb760b44877c497fc6211fe
+  - enabled: 1
+    path: Assets/Scenes/Dashboard/4. Teacher UserManagement.unity
+    guid: bf4a70bbb461fc44dbefe2ca838851db
+  - enabled: 1
+    path: Assets/Scenes/Lessons/Distance and Displacement Lesson.unity
+    guid: c3b40a3b16fe0484fa9e5056c61f1aa2
+  - enabled: 1
+    path: Assets/Scenes/Lessons/Mircroscope lesson.unity
+    guid: dfd5970a3b521864a81510aecff8d058
+  - enabled: 1
+    path: Assets/Scenes/Simulations/RoboDistance/RoboDistance.unity
+    guid: 4a9623eb6c29b9e4a956d9da9de221f1
   m_configObjects: {}
