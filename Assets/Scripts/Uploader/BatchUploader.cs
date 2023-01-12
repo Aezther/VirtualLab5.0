@@ -136,7 +136,7 @@ public class BatchUploader : MonoBehaviour
 
                 // transfer data per parameter
 
-                if((string.Join("", dataValues[0]))!=" ")
+                if((string.Join("", dataValues[0]))!="")
                 {
                     uploadedUserList.user[counter].ID = Convert.ToInt32(dataValues[0]);
                 }
