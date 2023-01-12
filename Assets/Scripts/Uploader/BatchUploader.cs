@@ -135,7 +135,11 @@ public class BatchUploader : MonoBehaviour
                 uploadedUserList.user[counter] = new User();
 
                 // transfer data per parameter
-                uploadedUserList.user[counter].ID = int.Parse(dataValues[0]);
+
+                if((string.Join("", dataValues[0]))!=" ")
+                {
+                    uploadedUserList.user[counter].ID = Convert.ToInt32(dataValues[0]);
+                }
                 uploadedUserList.user[counter].username = dataValues[1];
                 uploadedUserList.user[counter].password = dataValues[2];
                 uploadedUserList.user[counter].firstName = dataValues[3];
