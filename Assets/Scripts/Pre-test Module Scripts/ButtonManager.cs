@@ -6,8 +6,8 @@ using UnityEngine.UI;
 
 public class ButtonManager : MonoBehaviour
 {
-    // Singlton class
-    public static ButtonManager instance;
+    // Singleton class
+    public static ButtonManager instance; // A
 
     public GameObject[] optionsButtons;
     [SerializeField] Button submitButton;
