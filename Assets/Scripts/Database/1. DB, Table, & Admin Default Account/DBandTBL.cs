@@ -16,6 +16,7 @@ public class DBandTBL : MonoBehaviour
         CreateTeachersTBL();
         CreateSectionsTBL();
         CreateStudentsSessionsTBL();
+        CreateScoresTBL();
     }
 
     //CREATE DATABASE named (VirtualDB)
@@ -60,7 +61,7 @@ public class DBandTBL : MonoBehaviour
         dbconn = (IDbConnection)new SqliteConnection(conn);
         dbconn.Open(); //open connection to the database
         IDbCommand dbcmd = dbconn.CreateCommand();
-        string sqlQuery = "CREATE TABLE IF NOT EXISTS TeachersTBL (TeacherID INTEGER PRIMARY KEY, Username text NOT NULL, Password text NOT NULL" +
+        string sqlQuery = "CREATE TABLE IF NOT EXISTS TeachersTBL (TeacherID TEXT PRIMARY KEY, Username text NOT NULL, Password text NOT NULL" +
             ", Firstname text NOT NULL, Middlename text NOT NULL, Lastname text NOT NULL);";
 
         Debug.Log("Teachers Table Created!");
@@ -82,7 +83,7 @@ public class DBandTBL : MonoBehaviour
         dbconn = (IDbConnection)new SqliteConnection(conn);
         dbconn.Open(); //open connection to the database
         IDbCommand dbcmd = dbconn.CreateCommand();
-        string sqlQuery = "CREATE TABLE IF NOT EXISTS StudentsTBL (StudentID INTEGER PRIMARY KEY, Username text NOT NULL, Password text NOT NULL" +
+        string sqlQuery = "CREATE TABLE IF NOT EXISTS StudentsTBL (StudentID TEXT PRIMARY KEY, Username text NOT NULL, Password text NOT NULL" +
             ", Firstname text NOT NULL, Middlename text NOT NULL, Lastname text NOT NULL, Section text NOT NULL);";
 
         Debug.Log("Students Table Created!");
@@ -134,4 +135,22 @@ public class DBandTBL : MonoBehaviour
         dbconn.Close();
         dbconn = null;
     }
+      public void CreateScoresTBL(){
+        string conn = "URI=file:" + Application.streamingAssetsPath + "/Database/" + "/VirtualDB.db";
+        IDbConnection dbconn;//established a connection
+        dbconn = (IDbConnection)new SqliteConnection(conn);
+        dbconn.Open(); //open connection to the database
+        IDbCommand dbcmd = dbconn.CreateCommand();
+        string sqlQuery = "CREATE TABLE IF NOT EXISTS ScoresTBL (ScoreID INTEGER PRIMARY KEY AUTOINCREMENT, Subject text, Score INTEGER, StudentID INTEGER, FOREIGN KEY (StudentID) REFERENCES StudentsTBL (StudentID));";
+
+        Debug.Log("Scores Table Created!");
+        dbcmd.CommandText = sqlQuery;
+        IDataReader reader = dbcmd.ExecuteReader();
+        reader.Close();
+        reader = null;
+        dbcmd.Dispose();
+        dbcmd = null;
+        dbconn.Close();
+        dbconn = null;
+      }
 }

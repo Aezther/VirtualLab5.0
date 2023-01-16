@@ -33,7 +33,7 @@ public class DisplayDBValues : MonoBehaviour
     private string connectionString;
     void Start()
     {
-        connectionString = "URI=file:" + Application.streamingAssetsPath + "/Database/" + "/VirtualDB.db";
+        connectionString = "Data Source = C:\\Users\\Ian\\OneDrive\\Documents\\VirtualLab\\VirtualLab.db";
         DisplayUsersToScrollView();
         DisplayLogsToScrollView();
 
@@ -60,15 +60,15 @@ public class DisplayDBValues : MonoBehaviour
                     while (reader.Read()) 
                     {
                         // one loop = 1 user
-                        Debug.Log(reader.GetInt32(0).ToString() + " " + reader.GetString(1) + " " + reader.GetString(2) + " " + reader.GetString(3) + " " + reader.GetString(4) + " " + reader.GetString(5));
+                        //Debug.Log(reader.GetString(0) + " " + reader.GetString(1) + " " + reader.GetString(2) + " " + reader.GetString(3) + " " + reader.GetString(4) + " " + reader.GetString(5));
                         // create prefab
                         // modify value
                         GameObject userHeader = GameObject.Instantiate(headerPrefab, contentParent.transform);
 
                         textCompList = userHeader.gameObject.GetComponentsInChildren<TextMeshProUGUI>();
 
-                            Debug.Log(textCompList[0].gameObject.name);
-                            textCompList[0].text = reader.GetInt32(0).ToString();
+                            //Debug.Log(textCompList[0].gameObject.name);
+                            textCompList[0].text = reader.GetString(0);
                             textCompList[1].text = reader.GetString(1);
                             textCompList[2].text = reader.GetString(2);
                             textCompList[3].text = reader.GetString(3);
@@ -105,7 +105,7 @@ public class DisplayDBValues : MonoBehaviour
                     while (reader.Read())
                     {
                         // one loop = 1 user
-                        Debug.Log(reader.GetString(0) + " " + reader.GetString(1) + " " + reader.GetString(2) + " " + reader.GetString(3) + " " + reader.GetString(4));
+                        //Debug.Log(reader.GetString(0) + " " + reader.GetString(1) + " " + reader.GetString(2) + " " + reader.GetString(3) + " " + reader.GetString(4));
                         // create prefab
                         // modify value
                         GameObject userHeader = GameObject.Instantiate(logsHeaderPrefab, logsContentParent.transform);
@@ -149,7 +149,7 @@ public class DisplayDBValues : MonoBehaviour
                     while (reader.Read())
                     {
                         // one loop = 1 user
-                        Debug.Log(reader.GetString(0) + " " + reader.GetString(1) + " " + reader.GetString(2) + " " + reader.GetString(3) + " " + reader.GetString(4));
+                        //Debug.Log(reader.GetString(0) + " " + reader.GetString(1) + " " + reader.GetString(2) + " " + reader.GetString(3) + " " + reader.GetString(4));
                         // create prefab
                         // modify value
                         GameObject userHeader = GameObject.Instantiate(ARheaderPrefab, ARcontentParent.transform);

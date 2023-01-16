@@ -64,6 +64,10 @@ public class FadeSceneChanger : MonoBehaviour
     public void btnHomeToTeacherDashboard(){
         StartCoroutine(LoadScenes("3. TeacherDashboard"));
     }
+
+    public void btnUsermanagementFromDashToTeacherDashboard(){
+        StartCoroutine(LoadScenes("3. TeacherDashboard"));
+    }
     public void btnUsermanagementToTeacherUsermanagement(){
         StartCoroutine(LoadScenes("4. Teacher UserManagement"));
     }
