@@ -143,68 +143,6 @@ public class UserManagementScript : MonoBehaviour {
                 }else {
                     UserIDError.text = "";
                 }
-
-
-
-
-                    dbConnection.Close();
-            }
-        }
-        
-    }
-
-    public void SuccessfullLogin(){
-        using (IDbConnection dbConnection = new SqliteConnection(connectionString)) {
-            dbConnection.Open();
-            using (IDbCommand dbCmd = dbConnection.CreateCommand()) {
-
-
-
-
-                //condition for teachers
-                if (!string.IsNullOrEmpty(UserID.text) && !string.IsNullOrEmpty(Password.text) && !string.IsNullOrEmpty(ConfirmPassword.text)
-                    &&  !string.IsNullOrEmpty(FirstName.text) && !string.IsNullOrEmpty(LastName.text) && Password.text == ConfirmPassword.text && dropdownUserType.SelectedUserType == ("Teacher")) {
-                    
-                    
-                    
-                    string sqlQuery = "INSERT INTO TeachersTBL (TeacherID, Username, Password, Firstname, Middlename, Lastname) " +
-                        "VALUES ( '" + UserID.text + "','" + UserName.text + "','" + Password.text + "','" + FirstName.text + "','" + MiddleName.text + "','" + LastName.text + "');";
-                    dbCmd.CommandText = sqlQuery;
-                    dbCmd.ExecuteScalar();
-                    UserID.text = "";
-                    UserName.text = "";
-                    Password.text = "";
-                    ConfirmPassword.text = "";
-                    FirstName.text = "";
-                    MiddleName.text = "";
-                    LastName.text = "";
-
-                    SucessfulAccountCreation.SetActive(true);
-
-                    Debug.Log("Teacher Account create successfully");
-                }
-                
-                //condition for students
-                if(!string.IsNullOrEmpty(UserID.text) && !string.IsNullOrEmpty(Password.text) && !string.IsNullOrEmpty(ConfirmPassword.text) 
-                    && !string.IsNullOrEmpty(FirstName.text) && !string.IsNullOrEmpty(LastName.text) && Password.text == ConfirmPassword.text  && dropdownUserType.SelectedUserType == ("Student")) {
-                    
-                    string sqlQuery = "INSERT INTO StudentsTBL (StudentID, Username, Password, Firstname, Middlename, Lastname, Section) " +
-                        "VALUES ( '" + UserID.text + "','" + UserName.text + "','" + Password.text + "','" + FirstName.text + "','" 
-                        + MiddleName.text + "','" + LastName.text + "','" + dropdownSections.SelectedSection + "');";
-
-                    dbCmd.CommandText = sqlQuery;
-                    dbCmd.ExecuteScalar();
-                    Debug.Log("Student Account create successfully");
-                    UserID.text = "";
-                    UserName.text = "";
-                    Password.text = "";
-                    ConfirmPassword.text = "";
-                    FirstName.text = "";
-                    MiddleName.text = "";
-                    LastName.text = "";
-
-                    SucessfulAccountCreation.SetActive(true);
-                }
                 dbConnection.Close();
             }
         }
@@ -260,6 +198,12 @@ public class UserManagementScript : MonoBehaviour {
         }else {
             firstNameError.text ="";
         }
+        if (!Regex.IsMatch(FirstName.text, "^[a-zA-Z0-9 ]*$")) {
+            firstNameError.text = "Invalid Characters.";
+        }
+        else {
+            firstNameError.text = "";
+        }
     }
     public void LastNameValidation(){
         if (string.IsNullOrEmpty(LastName.text)){
@@ -274,50 +218,89 @@ public class UserManagementScript : MonoBehaviour {
         }else {
             lastnameError.text ="";
         }
-    }
-    public void SuccessfullRegistration(){
-
-        //STUDENT
-        if (  ((dropdownUserType.SelectedUserType == "Student" && UserID.text != DBStudentID)) && (!string.IsNullOrEmpty(UserID.text)) && 
-              (!string.IsNullOrWhiteSpace(UserID.text.Trim())) && (!Regex.IsMatch(UserID.text, @"\s")) && (Regex.IsMatch(UserID.text, "^[a-zA-Z0-9]+$"))    ) {
-            Debug.Log("Create Account!");
+        if (!Regex.IsMatch(LastName.text, "^[a-zA-Z0-9 ]+$")) {
+            lastnameError.text = "Invalid Characters.";
         }
         else {
-            Debug.Log("do not!");
+            lastnameError.text = "";
         }
-            //Student
-            //if (   ((dropdownUserType.SelectedUserType == "Student" && UserID.text != DBStudentID))   ) {
-            //    //Debug.Log("True");
-            //    //Debug.Log("pumasok ka");
-            //}
-            //else {
-            //    //Debug.Log("False");
-            //}
-
-            //if (!string.IsNullOrEmpty(UserID.text)) {
-            //    //Debug.Log("May laman");
-            //}
-            //else {
-            //    //Debug.Log("walang laman");
-            //}
-            //if (!string.IsNullOrWhiteSpace(UserID.text.Trim())) {
-            //    Debug.Log("Walang Spaces!");
-            //}
-            //else {
-            //    Debug.Log("may space space");
-            //}
-            //if (!Regex.IsMatch(UserID.text, @"\s")) {
-            //    Debug.Log("doesn't contains white space");
-            //}
-        //    if (Regex.IsMatch(UserID.text, "^[a-zA-Z0-9]+$")) {
-        //    Debug.Log("WALA!");
-        //}
-        //else {
-        //    Debug.Log("MERON!");
-        //}
-
     }
-    
+    public void SuccessfullRegistration(){
+        using (IDbConnection dbConnection = new SqliteConnection(connectionString)) {
+            dbConnection.Open();
+            using (IDbCommand dbCmd = dbConnection.CreateCommand()) {
+                //STUDENTS
+                if ((dropdownUserType.SelectedUserType == ("Student")) &&((dropdownUserType.SelectedUserType == "Student" && UserID.text != DBStudentID)) && (!string.IsNullOrEmpty(UserID.text)) &&
+                    (!string.IsNullOrWhiteSpace(UserID.text.Trim())) && (!Regex.IsMatch(UserID.text, @"\s")) && (Regex.IsMatch(UserID.text, "^[a-zA-Z0-9]+$")) &&
+                    (!string.IsNullOrEmpty(Password.text)) && (!string.IsNullOrWhiteSpace(Password.text.Trim())) && (Password.text.Length > 8) &&
+                    (!string.IsNullOrEmpty(ConfirmPassword.text)) && (!string.IsNullOrWhiteSpace(ConfirmPassword.text.Trim())) && (Password.text == ConfirmPassword.text) &&
+                    (!string.IsNullOrEmpty(FirstName.text)) && (!string.IsNullOrWhiteSpace(FirstName.text)) && (Regex.IsMatch(FirstName.text, "^[a-zA-Z0-9 ]+$")) &&
+                    (!string.IsNullOrEmpty(LastName.text)) && (!string.IsNullOrWhiteSpace(LastName.text)) && (Regex.IsMatch(LastName.text, "^[a-zA-Z0-9 ]+$"))) {
+
+                    Debug.Log("Success!");
+
+                    //start
+                    sqlQuery = "INSERT INTO StudentsTBL (StudentID, Username, Password, Firstname, Middlename, Lastname, Section) VALUES ( '" +
+                        UserID.text + "','" + 
+                        UserName.text + "','" + 
+                        Password.text + "','" + 
+                        FirstName.text + "','" + 
+                        MiddleName.text + "','" + 
+                        LastName.text + "','" + 
+                        dropdownSections.SelectedSection + "');";
+                    Debug.Log("Student Account has been created!");
+                    dbCmd.CommandText = sqlQuery;
+                    dbCmd.ExecuteNonQuery();
+
+                    SucessfulAccountCreation.SetActive(true);
+                    //end
+                    UserID.text = "";
+                    UserName.text = "";
+                    Password.text = "";
+                    ConfirmPassword.text = "";
+                    FirstName.text = "";
+                    MiddleName.text = "";
+                    LastName.text = "";
+                }
+
+                //TEACHER
+                if ((dropdownUserType.SelectedUserType == ("Teacher")) &&((dropdownUserType.SelectedUserType == "Teacher" && UserID.text != DBTeacherID)) && (!string.IsNullOrEmpty(UserID.text)) &&
+                    (!string.IsNullOrWhiteSpace(UserID.text.Trim())) && (!Regex.IsMatch(UserID.text, @"\s")) && (Regex.IsMatch(UserID.text, "^[a-zA-Z0-9]+$")) &&
+                    (!string.IsNullOrEmpty(Password.text)) && (!string.IsNullOrWhiteSpace(Password.text.Trim())) && (Password.text.Length > 8) &&
+                    (!string.IsNullOrEmpty(ConfirmPassword.text)) && (!string.IsNullOrWhiteSpace(ConfirmPassword.text.Trim())) && (Password.text == ConfirmPassword.text) &&
+                    (!string.IsNullOrEmpty(FirstName.text)) && (!string.IsNullOrWhiteSpace(FirstName.text)) && (Regex.IsMatch(FirstName.text, "^[a-zA-Z0-9 ]+$")) &&
+                    (!string.IsNullOrEmpty(LastName.text)) && (!string.IsNullOrWhiteSpace(LastName.text)) && (Regex.IsMatch(LastName.text, "^[a-zA-Z0-9 ]+$"))) {
+
+                    Debug.Log("Success!");
+
+                    //start
+                    sqlQuery = "INSERT INTO TeachersTBL (TeacherID, Username, Password, Firstname, Middlename, Lastname) VALUES ( '" + 
+                        UserID.text + "','" + 
+                        UserName.text + "','" + 
+                        Password.text + "','" + 
+                        FirstName.text + "','" + 
+                        MiddleName.text + "','" + 
+                        LastName.text + "');";
+                    Debug.Log("Teacher Account has been created!");
+
+                    dbCmd.CommandText = sqlQuery;
+                    dbCmd.ExecuteNonQuery();
+
+                    SucessfulAccountCreation.SetActive(true);
+                    //end
+                    UserID.text = "";
+                    UserName.text = "";
+                    Password.text = "";
+                    ConfirmPassword.text = "";
+                    FirstName.text = "";
+                    MiddleName.text = "";
+                    LastName.text = "";
+                }
+                dbConnection.Close();
+            }
+        }
+    }
+
     public void Clear() {
         UserID.text = "";
         UserName.text = "";
@@ -326,46 +309,25 @@ public class UserManagementScript : MonoBehaviour {
         FirstName.text = "";
         MiddleName.text = "";
         LastName.text = "";
-        //UsernameError.SetActive(false);
-        //FirstnameError.SetActive(false);
-        //LastnameError.SetActive(false);
-        //PasswordDoNotMatch.SetActive(false);
-        //PasswordEmptyError.SetActive(false);
-        //PasswordLengthError.SetActive(false);
+
     }
     public void btnAddSectionClearErrors() {
-        //UsernameError.SetActive(false);
-        //FirstnameError.SetActive(false);
-        //LastnameError.SetActive(false);
-        //PasswordDoNotMatch.SetActive(false);
-        //PasswordEmptyError.SetActive(false);
-        //PasswordLengthError.SetActive(false);
-    }
 
+    }
     //ADD SECTION PANEL
     public void AddSection() {
-        // string conn = "URI=file:" + Application.dataPath + "/Database/"+"/testdb.db";
-        //string conn = "URI=file:" + Application.streamingAssetsPath + "/Database/" + "/VirtualDB.db"; //path to database, will read anything inside assets
-        IDbConnection dbconn;//established a connection
-        dbconn = (IDbConnection)new SqliteConnection(connectionString);
-        dbconn.Open(); //open connection to the database
-        IDbCommand dbcmd = dbconn.CreateCommand();
+        using (IDbConnection dbConnection = new SqliteConnection(connectionString)) {
+            dbConnection.Open();
+            using (IDbCommand dbCmd = dbConnection.CreateCommand()) {
 
-        string sqlQuery = "INSERT INTO SectionsTBL (Sections) VALUES('" + IFieldSections.text + "');";
-        Debug.Log("Section is added Successfully!");
-
-        dbcmd.CommandText = sqlQuery;
-        IDataReader reader = dbcmd.ExecuteReader();
-
-
-        reader.Close();
-        reader = null;
-        dbcmd.Dispose();
-        dbcmd = null;
-        dbconn.Close();
-        dbconn = null;
+                sqlQuery = "INSERT INTO SectionsTBL (Sections) VALUES('" + IFieldSections.text + "');";
+                Debug.Log("Section is added Successfully!");
+                dbCmd.CommandText = sqlQuery;
+                dbCmd.ExecuteNonQuery();
+            }
+            dbConnection.Close();
+        }
     }
-
     public void GetValueUsername() {
         UserName.text = LastName.text + "." + UserID.text;
 
@@ -378,11 +340,8 @@ public class UserManagementScript : MonoBehaviour {
             Section.SetActive(true);
             lblTeacherInformation.SetActive(false);
             lblStudentInformation.SetActive(true);
-            
         }
     }
-
-
 }
 
 
