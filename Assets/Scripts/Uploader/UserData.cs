@@ -9,7 +9,7 @@ public class UserData : ScriptableObject
     public class User
     {
         // user attributes
-        public int ID;
+        public string ID;
         public string username;
         public string password;
         public string firstName;

@@ -56,8 +56,18 @@ public class DropdownSections : MonoBehaviour
         dropdownSection.onValueChanged.AddListener(delegate { DropdownItemSelected(dropdownSection); });
     }
 
-    public void DropdownItemSelected(TMP_Dropdown dropdown) {//---------------Section;
-        index = dropdown.value;
-        SelectedSection = dropdown.options[index].text;
+    public void DropdownItemSelected(TMP_Dropdown dropdown)
+    {//---------------Section;
+        try
+        {
+            index = dropdown.value;
+            SelectedSection = dropdown.options[index].text;
+        }
+        catch (Exception ex)
+        {
+
+        }
+
+
     }
 }
