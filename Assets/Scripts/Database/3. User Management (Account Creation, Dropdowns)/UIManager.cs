@@ -11,6 +11,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject logSessionPanel;
     [SerializeField] GameObject createAccountPanel;
 
+    [SerializeField] GameObject maximizedAccRecordPanel;
+
+
     [SerializeField] Button createAccButton;
     [SerializeField] Button logRecordsButton;
     [SerializeField] GameObject refreshButton;
@@ -46,5 +49,19 @@ public class UIManager : MonoBehaviour
 
         createAccountPanel.SetActive(true);
         logSessionPanel.SetActive(false);
+    }
+
+    public void OpenMaximizedAccRecs()
+    {
+        createAccountPanel.SetActive(false);
+        maximizedAccRecordPanel.SetActive(true);
+
+    }
+
+    public void CloseMaximizedAccRecs()
+    {
+        createAccountPanel.SetActive(true);
+        maximizedAccRecordPanel.SetActive(false);
+
     }
 }
