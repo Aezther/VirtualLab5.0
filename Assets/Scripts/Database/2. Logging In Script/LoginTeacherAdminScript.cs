@@ -19,13 +19,17 @@ public class LoginTeacherAdminScript : MonoBehaviour
     public TextMeshProUGUI passError;
     private string connectionString;
     private string sqlQuery;
+
     //get teacher id
-    public string TeacherIDInfo;
+    [SerializeField] TeacherInfo teacherInfo;
     //get time
     private string timeLoggedIn;
+
     void Start()
     {
-        connectionString = "Data Source = C:\\Users\\Ian\\OneDrive\\Documents\\VirtualLab\\VirtualLab.db";
+        //connectionString = "Data Source = C:\\Users\\Ian\\OneDrive\\Documents\\VirtualLab\\VirtualLab.db";
+        connectionString = "Data Source = C:\\Users\\oliva\\Documents\\VirtualLab\\VirtualLab.db";
+
     }
 
 
@@ -117,8 +121,9 @@ public class LoginTeacherAdminScript : MonoBehaviour
                 dbCmd.CommandText = sqlQuery;
                 using (IDataReader reader = dbCmd.ExecuteReader()) {
                     while (reader.Read()) {
-                        TeacherIDInfo = reader.GetString(0);
-                        Debug.Log(TeacherIDInfo);
+                        teacherInfo.TeacherID = reader.GetString(0);
+                        // set scriptable value
+                        Debug.Log(teacherInfo.TeacherID);
                     }
                     reader.Close();
                 }
@@ -174,30 +179,33 @@ public class LoginTeacherAdminScript : MonoBehaviour
                 //End
                 //Start
                 //SUCCESSFUL LOGIN
-                //sqlQuery = "SELECT Username, Password FROM TeachersTBL;";
-                //dbCmd.CommandText = sqlQuery;
-                //using (IDataReader reader = dbCmd.ExecuteReader()) {
-                //    while (reader.Read()) {
-                //        string DBUsername = reader.GetString(0);
-                //        string DBPassword = reader.GetString(1);
-                //        //Successfull login
-                //        if (DBUsername.Equals(userInput.text) && DBPassword.Equals(passInput.text) && !string.IsNullOrEmpty(passInput.text) && !string.IsNullOrEmpty(userInput.text)) {
-                //            userError.text = "";
-                //            passError.text = "";
-                //            StartCoroutine(LoadScenes("3. TeacherDashboard"));
+                sqlQuery = "SELECT Username, Password FROM TeachersTBL;";
+                dbCmd.CommandText = sqlQuery;
+                using (IDataReader reader = dbCmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        string DBUsername = reader.GetString(0);
+                        string DBPassword = reader.GetString(1);
+                        //Successfull login
+                        if (DBUsername.Equals(userInput.text) && DBPassword.Equals(passInput.text) && !string.IsNullOrEmpty(passInput.text) && !string.IsNullOrEmpty(userInput.text))
+                        {
+                            userError.text = "";
+                            passError.text = "";
+                            StartCoroutine(LoadScenes("3. TeacherDashboard"));
 
-                //            Debug.Log("Admin Successful Login! Welcome! ");
-                //            GetTeacherID();
-                //        }
-                //    }
-                //    reader.Close();
-                //    timeLoggedIn = System.DateTime.UtcNow.ToLocalTime().ToString("dd-MM-yyyy HH:mm:ss tt");
-                //    sqlQuery = "INSERT INTO TeacherSessionsTBL (Action, Time, TeacherID) VALUES ('Log in','" + timeLoggedIn + "','" + TeacherIDInfo + "');";
-                //    Debug.Log(timeLoggedIn + TeacherIDInfo);
-                //    //sqlQuery = "INSERT INTO SectionsTBL (Sections) VALUES('Carlo');";
-                //    dbCmd.CommandText = sqlQuery;
-                //    dbCmd.ExecuteNonQuery();
-                //}
+                            Debug.Log("Admin Successful Login! Welcome! ");
+                            GetTeacherID();
+                        }
+                    }
+                    reader.Close();
+                    //timeLoggedIn = System.DateTime.UtcNow.ToLocalTime().ToString("dd-MM-yyyy HH:mm:ss tt");
+                    //sqlQuery = "INSERT INTO TeacherSessionsTBL (Action, Time, TeacherID) VALUES ('Log in','" + timeLoggedIn + "','" + teacherInfo.TeacherID + "');";
+                    //Debug.Log(timeLoggedIn + teacherInfo.TeacherID);
+                    ////sqlQuery = "INSERT INTO SectionsTBL (Sections) VALUES('Carlo');";
+                    //dbCmd.CommandText = sqlQuery;
+                    //dbCmd.ExecuteNonQuery();
+                }
                 //End
             }
             dbConnection.Close();

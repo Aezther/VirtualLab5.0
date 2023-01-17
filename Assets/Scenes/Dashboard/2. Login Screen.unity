@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12731715, g: 0.13414735, b: 0.121078536, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2405,7 +2405,7 @@ MonoBehaviour:
   passInput: {fileID: 1925255367}
   userError: {fileID: 554989909}
   passError: {fileID: 1107711647}
-  TeacherIDInfo: 
+  teacherInfo: {fileID: 11400000, guid: 7b3f85ef3d6a90144a16c651d6fa4e92, type: 2}
 --- !u!114 &593695807
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9146,7 +9146,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 593695805}
         m_TargetAssemblyTypeName: LoginTeacherAdminScript, Assembly-CSharp
-        m_MethodName: 
+        m_MethodName: TeacherLogin
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -60,7 +60,9 @@ public class UserManagementScript : MonoBehaviour {
         dropdownSections = DDSection.GetComponent<DropdownSections>(); // 3rd
     }
     void Start() {
-        connectionString = "Data Source = C:\\Users\\Ian\\OneDrive\\Documents\\VirtualLab\\VirtualLab.db";
+        //connectionString = "Data Source = C:\\Users\\Ian\\OneDrive\\Documents\\VirtualLab\\VirtualLab.db";
+        connectionString = "Data Source = C:\\Users\\oliva\\Documents\\VirtualLab\\VirtualLab.db";
+
     }
     void Update() {
         GetValueUsername();
@@ -262,6 +264,10 @@ public class UserManagementScript : MonoBehaviour {
                     MiddleName.text = "";
                     LastName.text = "";
                 }
+                else
+                {
+                    Debug.Log("Failed to create student account");
+                }
 
                 //TEACHER
                 if ((dropdownUserType.SelectedUserType == ("Teacher")) &&((dropdownUserType.SelectedUserType == "Teacher" && UserID.text != DBTeacherID)) && (!string.IsNullOrEmpty(UserID.text)) &&
@@ -295,6 +301,10 @@ public class UserManagementScript : MonoBehaviour {
                     FirstName.text = "";
                     MiddleName.text = "";
                     LastName.text = "";
+                }
+                else
+                {
+                    Debug.Log("Failed to create teacher account");
                 }
                 dbConnection.Close();
             }
