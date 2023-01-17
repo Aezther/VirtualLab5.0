@@ -107,7 +107,7 @@ public class DisplayDBValues : MonoBehaviour
                 if (words.Length == 0 || searchInput.text.Length == 0)
                 {
                     searchInput.text = "";
-                     sqlQuery = "SELECT StudentID, Username, Firstname, Middlename, Lastname, Section FROM StudentsTBL";
+                    sqlQuery = "SELECT StudentID, Username, Firstname, Middlename, Lastname, Section FROM StudentsTBL";
                 }
                 else
                 {
