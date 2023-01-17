@@ -12,12 +12,21 @@ using JetBrains.Annotations;
 using System.Xml.Linq;
 public class DisplayDBValues : MonoBehaviour
 {
-    [Header("User Values")]
-    [SerializeField] GameObject filteredHeaderPrefab;
-    [SerializeField] GameObject AC_content;
-    [SerializeField] GameObject AC_contentPreview;
+    [Header("User Values Student")]
+    [SerializeField] GameObject filteredStudentHeaderPrefab;
+    [SerializeField] GameObject ACS_content;
+    [SerializeField] GameObject ACS_contentPreview;
+    [SerializeField] TMP_InputField searchInputStudent;
 
-    [SerializeField] TMP_InputField searchInput;
+
+    [Header("User Values Teacher")]
+
+    [SerializeField] GameObject filteredTeacherHeaderPrefab;
+    [SerializeField] GameObject ACT_content;
+    [SerializeField] GameObject ACT_contentPreview;
+    [SerializeField] TMP_InputField searchInputTeacher;
+
+
     private TextMeshProUGUI[] textCompList;
 
     [Header("Logs Values")]
@@ -39,16 +48,19 @@ public class DisplayDBValues : MonoBehaviour
         //connectionString = "Data Source = C:\\Users\\Ian\\OneDrive\\Documents\\VirtualLab\\VirtualLab.db";
         connectionString = "Data Source = C:\\Users\\oliva\\Documents\\VirtualLab\\VirtualLab.db";
 
-        DisplayAccountRecMain();
-        DisplayAccountRecPreview();
+        DisplayStudentAccRecMain();
+        DisplayStudentAccRecPreview();
+
+        DisplayTeacherAccRecMain();
+        DisplayTeacherAccRecPreview();
         DisplayLogsToScrollView();
 
     }
 
-    public void DisplayAccountRecMain() 
+    public void DisplayStudentAccRecMain() 
     {
         // delete all child 
-        foreach (Transform child in AC_content.transform)
+        foreach (Transform child in ACS_content.transform)
         {
             Destroy(child.gameObject);
         }
@@ -69,7 +81,7 @@ public class DisplayDBValues : MonoBehaviour
                         //Debug.Log(reader.GetString(0) + " " + reader.GetString(1) + " " + reader.GetString(2) + " " + reader.GetString(3) + " " + reader.GetString(4) + " " + reader.GetString(5));
                         // create prefab
                         // modify value
-                        GameObject userHeader = GameObject.Instantiate(filteredHeaderPrefab, AC_content.transform);
+                        GameObject userHeader = GameObject.Instantiate(filteredStudentHeaderPrefab, ACS_content.transform);
 
                         textCompList = userHeader.gameObject.GetComponentsInChildren<TextMeshProUGUI>();
 
@@ -89,10 +101,54 @@ public class DisplayDBValues : MonoBehaviour
             dbConnection.Close();
         }
     }
-    public void DisplayAccountRecPreview()
+    public void DisplayTeacherAccRecMain()
     {
         // delete all child 
-        foreach (Transform child in AC_contentPreview.transform)
+        foreach (Transform child in ACT_content.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        using (IDbConnection dbConnection = new SqliteConnection(connectionString))
+        {
+            dbConnection.Open();
+            using (IDbCommand dbCmd = dbConnection.CreateCommand())
+            {
+                string sqlQuery = "SELECT TeacherID, Username, Firstname, Middlename, Lastname FROM TeachersTBL";
+                dbCmd.CommandText = sqlQuery;
+                using (IDataReader reader = dbCmd.ExecuteReader())
+                {
+                    // reinstantiate all child
+                    while (reader.Read())
+                    {
+                        // one loop = 1 user
+                        //Debug.Log(reader.GetString(0) + " " + reader.GetString(1) + " " + reader.GetString(2) + " " + reader.GetString(3) + " " + reader.GetString(4) + " " + reader.GetString(5));
+                        // create prefab
+                        // modify value
+                        GameObject userHeader = GameObject.Instantiate(filteredTeacherHeaderPrefab, ACT_content.transform);
+
+                        textCompList = userHeader.gameObject.GetComponentsInChildren<TextMeshProUGUI>();
+
+                        //Debug.Log(textCompList[0].gameObject.name);
+                        textCompList[0].text = reader.GetString(0);
+                        textCompList[1].text = reader.GetString(1);
+                        textCompList[2].text = reader.GetString(2);
+                        textCompList[3].text = reader.GetString(3);
+                        textCompList[4].text = reader.GetString(4);
+                    }
+                    reader.Close();
+
+                }
+                dbCmd.ExecuteNonQuery();
+            }
+            dbConnection.Close();
+        }
+    }
+
+    public void DisplayStudentAccRecPreview()
+    {
+        // delete all child 
+        foreach (Transform child in ACS_contentPreview.transform)
         {
             Destroy(child.gameObject);
         }
@@ -113,7 +169,7 @@ public class DisplayDBValues : MonoBehaviour
                         //Debug.Log(reader.GetString(0) + " " + reader.GetString(1) + " " + reader.GetString(2) + " " + reader.GetString(3) + " " + reader.GetString(4) + " " + reader.GetString(5));
                         // create prefab
                         // modify value
-                        GameObject userHeader = GameObject.Instantiate(filteredHeaderPrefab, AC_contentPreview.transform);
+                        GameObject userHeader = GameObject.Instantiate(filteredStudentHeaderPrefab, ACS_contentPreview.transform);
 
                         textCompList = userHeader.gameObject.GetComponentsInChildren<TextMeshProUGUI>();
 
@@ -133,15 +189,57 @@ public class DisplayDBValues : MonoBehaviour
             dbConnection.Close();
         }
     }
-    public void DisplayFilteredAccRecMain()
+    public void DisplayTeacherAccRecPreview()
     {
         // delete all child 
-        foreach (Transform child in AC_content.transform)
+        foreach (Transform child in ACT_contentPreview.transform)
         {
             Destroy(child.gameObject);
         }
 
-  
+        using (IDbConnection dbConnection = new SqliteConnection(connectionString))
+        {
+            dbConnection.Open();
+            using (IDbCommand dbCmd = dbConnection.CreateCommand())
+            {
+                string sqlQuery = "SELECT TeacherID, Username, Firstname, Middlename, Lastname FROM TeachersTBL";
+                dbCmd.CommandText = sqlQuery;
+                using (IDataReader reader = dbCmd.ExecuteReader())
+                {
+                    // reinstantiate all child
+                    while (reader.Read())
+                    {
+                        // one loop = 1 user
+                        //Debug.Log(reader.GetString(0) + " " + reader.GetString(1) + " " + reader.GetString(2) + " " + reader.GetString(3) + " " + reader.GetString(4) + " " + reader.GetString(5));
+                        // create prefab
+                        // modify value
+                        GameObject userHeader = GameObject.Instantiate(filteredTeacherHeaderPrefab, ACT_contentPreview.transform);
+
+                        textCompList = userHeader.gameObject.GetComponentsInChildren<TextMeshProUGUI>();
+
+                        //Debug.Log(textCompList[0].gameObject.name);
+                        textCompList[0].text = reader.GetString(0);
+                        textCompList[1].text = reader.GetString(1);
+                        textCompList[2].text = reader.GetString(2);
+                        textCompList[3].text = reader.GetString(3);
+                        textCompList[4].text = reader.GetString(4);
+                    }
+                    reader.Close();
+
+                }
+                dbCmd.ExecuteNonQuery();
+            }
+            dbConnection.Close();
+        }
+    }
+
+    public void DisplayStudentFilteredAccRecMain()
+    {
+        // delete all child 
+        foreach (Transform child in ACS_content.transform)
+        {
+            Destroy(child.gameObject);
+        }
 
         using (IDbConnection dbConnection = new SqliteConnection(connectionString))
         {
@@ -149,21 +247,21 @@ public class DisplayDBValues : MonoBehaviour
             using (IDbCommand dbCmd = dbConnection.CreateCommand())
             {
                 string sqlQuery;
-                string[] words = searchInput.text.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
-                if (words.Length == 0 || searchInput.text.Length == 0)
+                string[] words = searchInputStudent.text.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
+                if (words.Length == 0 || searchInputStudent.text.Length == 0)
                 {
-                    searchInput.text = "";
+                    searchInputStudent.text = "";
                     sqlQuery = "SELECT StudentID, Username, Firstname, Middlename, Lastname, Section FROM StudentsTBL";
                 }
                 else
                 {
                     sqlQuery = "SELECT StudentID, Username, Firstname, Middlename, Lastname, Section FROM StudentsTBL " +
                     "WHERE StudentID LIKE '' " +
-                    "OR Username LIKE '" + searchInput.text + "' " +
-                    "OR Firstname LIKE '" + searchInput.text + "' " +
-                    "OR Middlename LIKE '" + searchInput.text + "' " +
-                    "OR Lastname LIKE '" + searchInput.text + "' " +
-                    "OR Section LIKE '" + searchInput.text + "' ";
+                    "OR Username LIKE '" + searchInputStudent.text + "' " +
+                    "OR Firstname LIKE '" + searchInputStudent.text + "' " +
+                    "OR Middlename LIKE '" + searchInputStudent.text + "' " +
+                    "OR Lastname LIKE '" + searchInputStudent.text + "' " +
+                    "OR Section LIKE '" + searchInputStudent.text + "' ";
                 }
                  
                 dbCmd.CommandText = sqlQuery;
@@ -176,7 +274,7 @@ public class DisplayDBValues : MonoBehaviour
                         //Debug.Log(reader.GetString(0) + " " + reader.GetString(1) + " " + reader.GetString(2) + " " + reader.GetString(3) + " " + reader.GetString(4) + " " + reader.GetString(5));
                         // create prefab
                         // modify value
-                        GameObject userHeader = GameObject.Instantiate(filteredHeaderPrefab, AC_content.transform);
+                        GameObject userHeader = GameObject.Instantiate(filteredStudentHeaderPrefab, ACS_content.transform);
 
                         textCompList = userHeader.gameObject.GetComponentsInChildren<TextMeshProUGUI>();
 
@@ -196,15 +294,13 @@ public class DisplayDBValues : MonoBehaviour
             dbConnection.Close();
         }
     }
-    public void DisplayFilteredAccRecPreview()
+    public void DisplayTeacherFilteredAccRecMain()
     {
         // delete all child 
-        foreach (Transform child in AC_content.transform)
+        foreach (Transform child in ACT_content.transform)
         {
             Destroy(child.gameObject);
         }
-
-
 
         using (IDbConnection dbConnection = new SqliteConnection(connectionString))
         {
@@ -212,21 +308,20 @@ public class DisplayDBValues : MonoBehaviour
             using (IDbCommand dbCmd = dbConnection.CreateCommand())
             {
                 string sqlQuery;
-                string[] words = searchInput.text.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                if (words.Length == 0 || searchInput.text.Length == 0)
+                string[] words = searchInputTeacher.text.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                if (words.Length == 0 || searchInputTeacher.text.Length == 0)
                 {
-                    searchInput.text = "";
-                    sqlQuery = "SELECT StudentID, Username, Firstname, Middlename, Lastname, Section FROM StudentsTBL";
+                    searchInputStudent.text = "";
+                    sqlQuery = "SELECT TeacherID, Username, Firstname, Middlename, Lastname FROM TeachersTBL";
                 }
                 else
                 {
-                    sqlQuery = "SELECT StudentID, Username, Firstname, Middlename, Lastname, Section FROM StudentsTBL " +
-                    "WHERE StudentID LIKE '' " +
-                    "OR Username LIKE '" + searchInput.text + "' " +
-                    "OR Firstname LIKE '" + searchInput.text + "' " +
-                    "OR Middlename LIKE '" + searchInput.text + "' " +
-                    "OR Lastname LIKE '" + searchInput.text + "' " +
-                    "OR Section LIKE '" + searchInput.text + "' ";
+                    sqlQuery = "SELECT TeacherID, Username, Firstname, Middlename, Lastname FROM TeachersTBL " +
+                    "WHERE TeacherID LIKE '' " +
+                    "OR Username LIKE '" + searchInputTeacher.text + "' " +
+                    "OR Firstname LIKE '" + searchInputTeacher.text + "' " +
+                    "OR Middlename LIKE '" + searchInputTeacher.text + "' " +
+                    "OR Lastname LIKE '" + searchInputTeacher.text + "' ";
                 }
 
                 dbCmd.CommandText = sqlQuery;
@@ -239,7 +334,7 @@ public class DisplayDBValues : MonoBehaviour
                         //Debug.Log(reader.GetString(0) + " " + reader.GetString(1) + " " + reader.GetString(2) + " " + reader.GetString(3) + " " + reader.GetString(4) + " " + reader.GetString(5));
                         // create prefab
                         // modify value
-                        GameObject userHeader = GameObject.Instantiate(filteredHeaderPrefab, AC_contentPreview.transform);
+                        GameObject userHeader = GameObject.Instantiate(filteredTeacherHeaderPrefab, ACT_content.transform);
 
                         textCompList = userHeader.gameObject.GetComponentsInChildren<TextMeshProUGUI>();
 
@@ -249,7 +344,6 @@ public class DisplayDBValues : MonoBehaviour
                         textCompList[2].text = reader.GetString(2);
                         textCompList[3].text = reader.GetString(3);
                         textCompList[4].text = reader.GetString(4);
-                        textCompList[5].text = reader.GetString(5);
                     }
                     reader.Close();
 
@@ -259,6 +353,18 @@ public class DisplayDBValues : MonoBehaviour
             dbConnection.Close();
         }
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     public void DisplayLogsToScrollView()
     {
         // delete all child 
@@ -302,7 +408,6 @@ public class DisplayDBValues : MonoBehaviour
             dbConnection.Close();
         }
     }
-
     public void DisplayARToScrollView()
     {
         // delete all child 
@@ -349,7 +454,10 @@ public class DisplayDBValues : MonoBehaviour
 
     public void UpdateAccRecDisplay()
     {
-        DisplayAccountRecMain();
-        DisplayAccountRecPreview();
+        DisplayStudentAccRecMain();
+        DisplayStudentAccRecPreview();
+
+        DisplayTeacherAccRecMain();
+        DisplayTeacherAccRecPreview();
     }
 }
