@@ -11,6 +11,7 @@ using Mono.Data.Sqlite;
 using System.Data;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 using static System.Collections.Specialized.BitVector32;
+using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
 
 public class BatchUploader : MonoBehaviour
 {
@@ -30,13 +31,22 @@ public class BatchUploader : MonoBehaviour
     private int nUsers = 0; // number of registered users
     private string connectionString;
     private string sqlQuery;
+    private bool isVerified = true;
+    private bool isSuccessful = true;
+
+    [SerializeField] GameObject uploadedPopup;
+    [SerializeField] GameObject errorlog;
+    [SerializeField] GameObject uploadLog;
+
+    [SerializeField] GameObject batchUploadPopup;
+
 
 
     [System.Serializable]
     public class User
     {
         // user attributes
-        public int ID;
+        public string ID;
         public string username;
         public string password;
         public string firstName;
@@ -57,11 +67,14 @@ public class BatchUploader : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        connectionString = "URI=file:" + Application.streamingAssetsPath + "/Database/" + "/VirtualDB.db";
+        connectionString = "Data Source = C:\\Users\\Ian\\OneDrive\\Documents\\VirtualLab\\VirtualLab.db";
+        //connectionString = "Data Source = C:\\Users\\oliva\\Documents\\VirtualLab\\VirtualLab.db";
+
     }
 
     public void CheckCSV()
     {
+        // CHECK HOW MANY INSTANCES OF USER TO USE
         //READ FILE FROM FILEPATH
 
         StreamReader strReader = new StreamReader(filePath);
@@ -100,6 +113,8 @@ public class BatchUploader : MonoBehaviour
 
     public void ReadCSV()
     {
+        isVerified = true;
+
         StreamReader strReader = new StreamReader(filePath);
         bool isEOF = false;
         int counter = -1;
@@ -135,22 +150,60 @@ public class BatchUploader : MonoBehaviour
                 uploadedUserList.user[counter] = new User();
 
                 // transfer data per parameter
-
-                if((string.Join("", dataValues[0]))!="")
+                string[] input =
                 {
-                    uploadedUserList.user[counter].ID = Convert.ToInt32(dataValues[0]);
+                    dataValues[0],
+                    dataValues[1],
+                    dataValues[2],
+                    dataValues[3],
+                    dataValues[4],
+                    dataValues[5],
+                    dataValues[6]
+                };
+
+                for (int i = 0; i < input.Length; i++)
+                {
+                    if (i != 2) // exclude password for special character checking
+                    {
+                        isVerified = SpecialCharChecker(input[i]);
+                        if (!isVerified)
+                        {
+                            errorlog.GetComponent<TextMeshProUGUI>().text = "Upload Failed. File contains invalid character(s)."; break;
+                        }
+
+                    }
+                    else 
+                    {
+                        isVerified = StringLengthChecker(input[i], 8);
+                        if (!isVerified)
+                        {
+                            errorlog.GetComponent<TextMeshProUGUI>().text = "Upload Failed. Password length error"; break;
+                        }
+                    }
+
+
                 }
-                uploadedUserList.user[counter].username = dataValues[1];
-                uploadedUserList.user[counter].password = dataValues[2];
-                uploadedUserList.user[counter].firstName = dataValues[3];
-                uploadedUserList.user[counter].middleName = dataValues[4];
-                uploadedUserList.user[counter].lastName = dataValues[5];
-                uploadedUserList.user[counter].section = dataValues[6];
+                
+                if (isVerified)
+                {
+                    uploadedUserList.user[counter].ID = dataValues[0];
+                    uploadedUserList.user[counter].username = dataValues[1];
+                    uploadedUserList.user[counter].password = dataValues[2];
+                    uploadedUserList.user[counter].firstName = dataValues[3];
+                    uploadedUserList.user[counter].middleName = dataValues[4];
+                    uploadedUserList.user[counter].lastName = dataValues[5];
+                    uploadedUserList.user[counter].section = dataValues[6];
+                    isVerified = true;
+
+                }
+               
+
 
             }
 
             counter++;
         }
+
     }
 
     public void WriteCSV()
@@ -158,6 +211,16 @@ public class BatchUploader : MonoBehaviour
 
     }
 
+    //OPEN SUCCESS POPUP AND ERRORLOG
+    public void Openpopup()
+    {
+
+        if (isVerified && isSuccessful)
+        {
+            uploadedPopup.SetActive(true);
+            batchUploadPopup.SetActive(false);
+        }
+    }
     public void LoadCSV()
     {
         if (this.loadedData == null)
@@ -165,6 +228,17 @@ public class BatchUploader : MonoBehaviour
             Debug.Log("Scriptable object for uploaded file not found");
             return;
         }
+
+        if (isVerified == false)
+        {
+           
+            errorlog.SetActive(true);
+
+            Debug.Log("FILE HAS ERROR");
+            return;
+        }
+
+
 
         this.loadedData.userList.user = new UserData.User[nUsers]; // create user list array in scriptable 
 
@@ -182,12 +256,16 @@ public class BatchUploader : MonoBehaviour
             this.loadedData.userList.user[i].lastName = uploadedUserList.user[i].lastName;
             this.loadedData.userList.user[i].section = uploadedUserList.user[i].section;
         }
-
         UploadLoadeDataToSQL();
     }
 
     public void OpenExplorer()
     {
+        // Select File
+        // Check File
+        // Read File
+
+        ResetLogs();
         // Open file with filter
         var extensions = new[]
         {
@@ -213,15 +291,19 @@ public class BatchUploader : MonoBehaviour
             else
             {
                 // File does not exist
+                errorlog.GetComponent<TextMeshProUGUI>().text = "No file selected";
                 Debug.Log("No file selected");
+                errorlog.SetActive(true);
+
                 uploadButton.interactable = false;
                 filename.text = " ";
-
-
             }
         }
         else
         {
+
+
+
             Debug.Log("Invalid path");
             filename.text = " ";
             uploadButton.interactable = false;
@@ -232,6 +314,7 @@ public class BatchUploader : MonoBehaviour
 
     public void UploadLoadeDataToSQL()
     {
+        isSuccessful = true;
         using (IDbConnection dbConnection = new SqliteConnection(connectionString))
         {
             dbConnection.Open();
@@ -240,25 +323,68 @@ public class BatchUploader : MonoBehaviour
             {
                 for (int i = 0; i < loadedData.userList.user.Length; i++)
                 {
-                    UserData.User studentData = loadedData.userList.user[i];
+                    try
+                    {
+                        UserData.User studentData = loadedData.userList.user[i];
 
-                    string sqlQuery = "INSERT INTO StudentsTBL (StudentID, Username, Password, Firstname, Middlename, Lastname, Section) " +
+                        string sqlQuery = "INSERT INTO StudentsTBL (StudentID, Username, Password, Firstname, Middlename, Lastname, Section) " +
 
-                   "VALUES ( '" + studentData.ID + "','" +
-                                  studentData.username + "','" +
-                                  studentData.password + "','" +
-                                  studentData.firstName + "','" +
-                                  studentData.middleName + "','" +
-                                  studentData.lastName + "','" +
-                                  studentData.section + "');";
+                       "VALUES ( '" + studentData.ID + "','" +
+                                      studentData.username + "','" +
+                                      studentData.password + "','" +
+                                      studentData.firstName + "','" +
+                                      studentData.middleName + "','" +
+                                      studentData.lastName + "','" +
+                                      studentData.section + "');";
 
-                    dbCmd.CommandText = sqlQuery;
-                    dbCmd.ExecuteScalar();
+                        dbCmd.CommandText = sqlQuery;
+                        dbCmd.ExecuteScalar();
+                    }
+                    catch (SqliteException ex)
+                    {
+                        errorlog.GetComponent<TextMeshProUGUI>().text = "Upload failed.Some data already exist in the database.";
+                        errorlog.SetActive(true);
+                        isSuccessful = false;
+                    }
                 }
             }
             dbConnection.Close();
             Debug.Log("Data has been uploaded to DATABASE");
+
         }
 
+        Openpopup();
+
+
     }
+
+    public bool SpecialCharChecker(string input)
+    {
+        if ((input.IndexOfAny("!@#$%^&*()_+-=[]{}|;':\"<>,?/\\".ToCharArray()) != -1)) // has any of the char
+        {
+            return false;
+        }
+        return true;
+    }
+
+    public bool StringLengthChecker(string input, int min)
+    {
+        if ((input.ToIntArray().Length < min)) // has any of the char
+        {
+            return false;
+        }
+        return true;
+    }
+    public void ResetLogs()
+    {
+        errorlog.GetComponent<TextMeshProUGUI>().text = "";
+        errorlog.SetActive(false);
+        uploadLog.SetActive(false);
+        uploadedPopup.SetActive(false);
+        uploadButton.interactable = false;
+        filename.text = "";
+        path = "";
+
+    }
+
 }
