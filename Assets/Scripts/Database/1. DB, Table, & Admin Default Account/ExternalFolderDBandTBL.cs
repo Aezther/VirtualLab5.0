@@ -20,6 +20,8 @@ public class ExternalFolderDBandTBL : MonoBehaviour
         CreateSectionsTBL();
         CreateStudentsTBL();
         CreateStudentsSessionsTBL();
+        CreateTeachersSessionsTBL();
+        CreateScoresTBL();
     }
         public void CreateFolder(){
         Directory.CreateDirectory(folderPath);  
@@ -96,8 +98,36 @@ public class ExternalFolderDBandTBL : MonoBehaviour
             using (IDbCommand dbCmd = dbConnection.CreateCommand()) {
 
                             
-                sqlQuery = "CREATE TABLE IF NOT EXISTS StudentSessionsTBL (SessionID INTEGER PRIMARY KEY AUTOINCREMENT, Action text, Time text, StudentID INTEGER, FOREIGN KEY (StudentID) REFERENCES StudentsTBL (StudentID));";
+                sqlQuery = "CREATE TABLE IF NOT EXISTS StudentSessionsTBL (SessionID INTEGER PRIMARY KEY AUTOINCREMENT, Action text, Time text, StudentID TEXT, FOREIGN KEY (StudentID) REFERENCES StudentsTBL (StudentID));";
                 Debug.Log("Student Sessions Table Created!");
+                dbCmd.CommandText = sqlQuery;
+                dbCmd.ExecuteNonQuery();
+            }
+            dbConnection.Close();
+        }
+    }
+    public void CreateTeachersSessionsTBL() {
+        using (IDbConnection dbConnection = new SqliteConnection(connectionString)) {
+            dbConnection.Open();
+            using (IDbCommand dbCmd = dbConnection.CreateCommand()) {
+
+
+                sqlQuery = "CREATE TABLE IF NOT EXISTS TeacherSessionsTBL (SessionID INTEGER PRIMARY KEY AUTOINCREMENT, Action text, Time text, TeacherID TEXT, FOREIGN KEY (TeacherID) REFERENCES TeachersTBL (TeacherID));";
+                Debug.Log("Teacher Sessions Table Created!");
+                dbCmd.CommandText = sqlQuery;
+                dbCmd.ExecuteNonQuery();
+            }
+            dbConnection.Close();
+        }
+    }
+    public void CreateScoresTBL() {
+        using (IDbConnection dbConnection = new SqliteConnection(connectionString)) {
+            dbConnection.Open();
+            using (IDbCommand dbCmd = dbConnection.CreateCommand()) {
+
+
+                sqlQuery = "CREATE TABLE IF NOT EXISTS ScoresTBL (ScoreID INTEGER PRIMARY KEY AUTOINCREMENT, Lesson text, Score INTEGER, StudentID TEXT, FOREIGN KEY (StudentID) REFERENCES StudentsTBL (StudentID));";
+                Debug.Log("Scores Table Created!");
                 dbCmd.CommandText = sqlQuery;
                 dbCmd.ExecuteNonQuery();
             }

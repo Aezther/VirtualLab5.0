@@ -57,7 +57,14 @@ public class DropdownSections : MonoBehaviour
     }
 
     public void DropdownItemSelected(TMP_Dropdown dropdown) {//---------------Section;
-        index = dropdown.value;
-        SelectedSection = dropdown.options[index].text;
+        try {
+            index = dropdown.value;
+            SelectedSection = dropdown.options[index].text;
+        }
+        catch (ArgumentOutOfRangeException ex) {
+            Debug.Log("error: " + ex);
+
+        }
+        
     }
 }
