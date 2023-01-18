@@ -60,8 +60,8 @@ public class UserManagementScript : MonoBehaviour {
         dropdownSections = DDSection.GetComponent<DropdownSections>(); // 3rd
     }
     void Start() {
-        //connectionString = "Data Source = C:\\Users\\Ian\\OneDrive\\Documents\\VirtualLab\\VirtualLab.db";
-        connectionString = "Data Source = C:\\Users\\oliva\\Documents\\VirtualLab\\VirtualLab.db";
+        connectionString = "Data Source = C:\\Users\\Ian\\OneDrive\\Documents\\VirtualLab\\VirtualLab.db";
+        //connectionString = "Data Source = C:\\Users\\oliva\\Documents\\VirtualLab\\VirtualLab.db";
 
     }
     void Update() {

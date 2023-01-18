@@ -65,7 +65,7 @@ public class DropdownSections : MonoBehaviour
         }
         catch (Exception ex)
         {
-
+            Debug.Log(ex);
         }
 
 

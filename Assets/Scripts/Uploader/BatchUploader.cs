@@ -345,6 +345,7 @@ public class BatchUploader : MonoBehaviour
                         errorlog.GetComponent<TextMeshProUGUI>().text = "Upload failed.Some data already exist in the database.";
                         errorlog.SetActive(true);
                         isSuccessful = false;
+                        Debug.Log(ex);
                     }
                 }
             }

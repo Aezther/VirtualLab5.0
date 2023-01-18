@@ -6,4 +6,6 @@ using UnityEngine;
 public class TeacherInfo : ScriptableObject
 {
     public string TeacherID;
+    public string TeacherFullname;
+    
 }

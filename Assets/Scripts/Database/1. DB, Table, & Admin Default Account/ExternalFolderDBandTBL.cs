@@ -22,6 +22,8 @@ public class ExternalFolderDBandTBL : MonoBehaviour
         CreateStudentsSessionsTBL();
         CreateTeachersSessionsTBL();
         CreateScoresTBL();
+        CreateSecurityQuestionsTeachersTBL();
+        CreateSecurityQuestionsStudentsTBL();
     }
         public void CreateFolder(){
         Directory.CreateDirectory(folderPath);  
@@ -128,6 +130,35 @@ public class ExternalFolderDBandTBL : MonoBehaviour
 
                 sqlQuery = "CREATE TABLE IF NOT EXISTS ScoresTBL (ScoreID INTEGER PRIMARY KEY AUTOINCREMENT, Lesson text, Score INTEGER, StudentID TEXT, FOREIGN KEY (StudentID) REFERENCES StudentsTBL (StudentID));";
                 Debug.Log("Scores Table Created!");
+                dbCmd.CommandText = sqlQuery;
+                dbCmd.ExecuteNonQuery();
+            }
+            dbConnection.Close();
+        }
+    }
+    public void CreateSecurityQuestionsTeachersTBL(){
+        using (IDbConnection dbConnection = new SqliteConnection(connectionString)) {
+            dbConnection.Open();
+            using (IDbCommand dbCmd = dbConnection.CreateCommand()) {
+
+
+                sqlQuery = "CREATE TABLE IF NOT EXISTS SecurityQuestionsTeachersTBL (SecurityQuestionTeacherID INTEGER PRIMARY KEY AUTOINCREMENT, Question text, Answer text, TeacherID TEXT, FOREIGN KEY (TeacherID) REFERENCES TeachersTBL (TeacherID));";
+                Debug.Log("Teacher Security Question Table Created!");
+                dbCmd.CommandText = sqlQuery;
+                dbCmd.ExecuteNonQuery();
+            }
+            dbConnection.Close();
+        }
+    }
+
+    public void CreateSecurityQuestionsStudentsTBL(){
+        using (IDbConnection dbConnection = new SqliteConnection(connectionString)) {
+            dbConnection.Open();
+            using (IDbCommand dbCmd = dbConnection.CreateCommand()) {
+
+
+                sqlQuery = "CREATE TABLE IF NOT EXISTS SecurityQuestionsStudentsTBL (SecurityQuestionStudentID INTEGER PRIMARY KEY AUTOINCREMENT, Question text, Answer text, StudentID TEXT, FOREIGN KEY (StudentID) REFERENCES StudentsTBL (StudentID));";
+                Debug.Log("Student Security Question Table Created!");
                 dbCmd.CommandText = sqlQuery;
                 dbCmd.ExecuteNonQuery();
             }
