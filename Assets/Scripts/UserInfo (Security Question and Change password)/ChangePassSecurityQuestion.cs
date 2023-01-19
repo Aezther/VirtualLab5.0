@@ -128,5 +128,23 @@ public class ChangePassSecurityQuestion : MonoBehaviour
             dbConnection.Close();
         }
     }
+    public void CurrentPasswordVisiblityShow(){
+        IFCurrentPassword.inputType = TMP_InputField.InputType.Standard;
+    }
+    public void CurrentPasswordVisibilityHide(){
+        IFCurrentPassword.contentType = TMP_InputField.ContentType.Password;
+    }
+    public void NewPasswordVisibilityShow(){
+        IFNewPassword.inputType = TMP_InputField.InputType.Standard;
+    }
+    public void NewPasswordVisibilityHide(){
+        IFNewPassword.contentType = TMP_InputField.ContentType.Password;
+    }
+    public void ConfirmPasswordVisibilityShow(){
+        IFConfirmNewPassword.inputType = TMP_InputField.InputType.Standard;
+    }
+    public void ConfirmPasswordVisibilityHide(){
+        IFConfirmNewPassword.contentType = TMP_InputField.ContentType.Password;
+    }
     
 }
