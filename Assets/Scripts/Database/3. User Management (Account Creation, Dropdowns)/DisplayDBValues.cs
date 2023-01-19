@@ -37,7 +37,10 @@ public class DisplayDBValues : MonoBehaviour
     [Header("Assessment Values")]
     [SerializeField] GameObject ARheaderPrefab;
     [SerializeField] GameObject ARcontentParent;
-    [SerializeField] Text selectedLesson;
+    [SerializeField] string selectedLesson = "Types of Faults";
+    [SerializeField] Button[] lessonButtonList;
+    [SerializeField] TMP_InputField ARsearchInput;
+
 
     private TextMeshProUGUI[] ARTextCompList;
 
@@ -48,7 +51,7 @@ public class DisplayDBValues : MonoBehaviour
     void Start()
     {
         //connectionString = "Data Source = C:\\Users\\Ian\\OneDrive\\Documents\\VirtualLab\\VirtualLab.db";
-        connectionString = "Data Source = C:\\Users\\oliva\\Documents\\VirtualLab\\VirtualLab.db";
+        connectionString = "Data Source = A:\\VirtualLab.db";
 
         if (ACT_content && ACT_contentPreview && filteredTeacherHeaderPrefab)
         {
@@ -62,8 +65,11 @@ public class DisplayDBValues : MonoBehaviour
             DisplayTeacherAccRecPreview();
             DisplayLogsToScrollView();
         }
+        if (ARcontentParent && ARheaderPrefab)
+        {
+            DisplayARToScrollView(selectedLesson);
 
-        DisplayARToScrollView("Types of Faults");
+        }
 
     }
 
@@ -392,7 +398,7 @@ public class DisplayDBValues : MonoBehaviour
 
                         logsTextCompList = userHeader.gameObject.GetComponentsInChildren<TextMeshProUGUI>();
 
-                        Debug.Log(textCompList[0].gameObject.name);
+                       // Debug.Log(logsTextCompList[0].gameObject.name);
                         logsTextCompList[0].text = reader.GetString(0);
                         logsTextCompList[1].text = reader.GetString(1);
                         logsTextCompList[2].text = reader.GetString(2);
@@ -407,8 +413,9 @@ public class DisplayDBValues : MonoBehaviour
             dbConnection.Close();
         }
     }
-    public void DisplayARToScrollView( string selectedLesson)
+    public void DisplayARToScrollView( string lesson)
     {
+        selectedLesson = lesson;
         // delete all child 
         foreach (Transform child in ARcontentParent.transform)
         {
@@ -420,7 +427,8 @@ public class DisplayDBValues : MonoBehaviour
             dbConnection.Open();
             using (IDbCommand dbCmd = dbConnection.CreateCommand())
             {
-                string sqlQuery = "SELECT Username, Lastname, Firstname, Section, Score, Date FROM ScoresTBL INNER JOIN StudentsTBL ON StudentsTBL.StudentID = ScoresTBL.StudentID WHERE ScoresTBL.Lesson = '"+selectedLesson+"';";
+                string sqlQuery = "SELECT Username, Lastname, Firstname, Section, Score, Date FROM ScoresTBL INNER JOIN StudentsTBL ON StudentsTBL.StudentID = ScoresTBL.StudentID WHERE ScoresTBL.Lesson = '" + lesson + "';";
+
                 dbCmd.CommandText = sqlQuery;
                 using (IDataReader reader = dbCmd.ExecuteReader())
                 {
@@ -452,7 +460,72 @@ public class DisplayDBValues : MonoBehaviour
             dbConnection.Close();
         }
     }
+    public void DisplayFilteredARToScrollView()
+    {
+        // delete all child 
+        foreach (Transform child in ARcontentParent.transform)
+        {
+            Destroy(child.gameObject);
+        }
 
+        using (IDbConnection dbConnection = new SqliteConnection(connectionString))
+        {
+            dbConnection.Open();
+            using (IDbCommand dbCmd = dbConnection.CreateCommand())
+            {
+                string sqlQuery;
+                string[] words = ARsearchInput.text.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                if (words.Length == 0 || ARsearchInput.text.Length == 0)
+                {
+                    sqlQuery = "SELECT Username, Lastname, Firstname, Section, Score, Date FROM ScoresTBL INNER JOIN StudentsTBL ON StudentsTBL.StudentID = ScoresTBL.StudentID WHERE ScoresTBL.Lesson = '" + selectedLesson + "';";
+
+                }
+                else
+                {
+                    sqlQuery = "SELECT Username, Lastname, Firstname, Section, Score, Date FROM ScoresTBL INNER JOIN StudentsTBL ON StudentsTBL.StudentID = ScoresTBL.StudentID WHERE ScoresTBL.Lesson = '" + selectedLesson + "' AND( StudentsTBL.Username LIKE '" + ARsearchInput.text + "' OR StudentsTBL.Lastname like '" + ARsearchInput.text + "' OR StudentsTBL.Firstname LIKE '" + ARsearchInput.text + "' OR StudentsTBL.Section LIKE '" + ARsearchInput.text + "' OR ScoresTBL.Score LIKE '" + ARsearchInput.text + "' OR ScoresTBL.Date LIKE '" + ARsearchInput.text + "' );";
+                }
+
+                dbCmd.CommandText = sqlQuery;
+                using (IDataReader reader = dbCmd.ExecuteReader())
+                {
+                    // reinstantiate all child
+                    while (reader.Read())
+                    {
+                        // one loop = 1 user
+                        //Debug.Log(reader.GetString(0) + " " + reader.GetString(1) + " " + reader.GetString(2) + " " + reader.GetString(3) + " " + reader.GetString(4));
+                        // create prefab
+                        // modify value
+                        GameObject userHeader = GameObject.Instantiate(ARheaderPrefab, ARcontentParent.transform);
+
+                        ARTextCompList = userHeader.gameObject.GetComponentsInChildren<TextMeshProUGUI>();
+
+                        Debug.Log(ARTextCompList[0].gameObject.name);
+                        ARTextCompList[0].text = reader.GetString(0);
+                        ARTextCompList[1].text = reader.GetString(1);
+                        ARTextCompList[2].text = reader.GetString(2);
+                        ARTextCompList[3].text = reader.GetString(3);
+                        ARTextCompList[4].text = reader.GetInt32(4).ToString();
+                        ARTextCompList[5].text = reader.GetString(5);
+
+                    }
+                    reader.Close();
+
+                }
+                dbCmd.ExecuteNonQuery();
+            }
+            dbConnection.Close();
+        }
+    }
+    public void RefreshAR()
+    {
+        for (int i = 0; i < lessonButtonList.Length; i++)
+        {
+            if (lessonButtonList[i].IsInteractable() == false)
+            {
+                DisplayARToScrollView( selectedLesson);
+            }
+        }
+    }
     public void UpdateAccRecDisplay()
     {
         DisplayStudentAccRecMain();

@@ -238,7 +238,7 @@ GameObject:
   - component: {fileID: 169977755}
   - component: {fileID: 169977754}
   m_Layer: 5
-  m_Name: SAV Button
+  m_Name: Speed and Velocity
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -542,6 +542,18 @@ MonoBehaviour:
       - m_Target: {fileID: 543441060}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: OpenUserManagement
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2118306333}
+        m_TargetAssemblyTypeName: DisplayDBValues, Assembly-CSharp
+        m_MethodName: RefreshAR
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1088,7 +1100,7 @@ GameObject:
   - component: {fileID: 498299831}
   - component: {fileID: 498299830}
   m_Layer: 5
-  m_Name: MCR Button
+  m_Name: Microscope
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1463,7 +1475,7 @@ GameObject:
   - component: {fileID: 723144357}
   - component: {fileID: 723144356}
   m_Layer: 5
-  m_Name: DOD Button
+  m_Name: Distance and Displacement
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2200,7 +2212,7 @@ GameObject:
   - component: {fileID: 905973040}
   - component: {fileID: 905973039}
   m_Layer: 5
-  m_Name: TOF Button
+  m_Name: Types of Faults
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3683,7 +3695,9 @@ MonoBehaviour:
   logsContentParent: {fileID: 0}
   ARheaderPrefab: {fileID: 1287050475435205201, guid: 4e6521c3d0ca71f4da49ba9d60426901, type: 3}
   ARcontentParent: {fileID: 6607147719022979403}
-  selectedLesson: {fileID: 0}
+  selectedLesson: 
+  lessonButtonList: []
+  ARsearchInput: {fileID: 6761380999007911235}
 --- !u!224 &38004292903138196
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7934,9 +7948,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 2118306333}
         m_TargetAssemblyTypeName: DisplayDBValues, Assembly-CSharp
-        m_MethodName: DisplayFilteredUsersToScrollView
+        m_MethodName: DisplayFilteredARToScrollView
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
