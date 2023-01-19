@@ -87,6 +87,7 @@ public class SettingsScript : MonoBehaviour
     public void VolumeSlider(float volume) {
         volume = Mathf.Round(Mathf.Lerp(0, 100, volume));
         volumeTextUI.text = volume.ToString();
+        Debug.Log(volume);
     }
     public void SaveVolumeButton() {
         float volumeValue = volumeSlider.value;
