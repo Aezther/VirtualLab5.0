@@ -35,12 +35,12 @@ public class Speed : MonoBehaviour
         }
 
         displaySpeed = playerSpeed.ToString("f1");
-        textSpeed.text = "Speed: " + displaySpeed + " m/s";
+        textSpeed.text = "[D/T]Speed: " + displaySpeed + " m/s";
 
         time = distanceScript.totalDistance / 8;
         time = Mathf.Round(time * 10.0f) * 0.1f;
         displayTime = time.ToString("F1");
-        textTime.text = "Time: " + displayTime + " s";
+        textTime.text = "[D/S]Time: " + displayTime + " s";
     }
 
 

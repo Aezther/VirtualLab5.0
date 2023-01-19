@@ -32,7 +32,7 @@ private Vector3 lastPosition ;
     totalDistance = Mathf.Round(totalDistance * 10.0f) * 0.1f;
     string displayDistance = totalDistance.ToString("F1");
 
-    textTotalDistance.text = "Distance: " + displayDistance + " m";
+    textTotalDistance.text = "[(S)(T)]Distance: " + displayDistance + " m";
 
     // Debug.Log("Update Position: " + originalPos);
 

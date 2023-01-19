@@ -72,8 +72,53 @@ public class FadeSceneChanger : MonoBehaviour
         StartCoroutine(LoadScenes("4. Teacher UserManagement"));
     }
     //5. ADMIN USER MANAGEMENT
-    public void btnHomeToAdminDashboard() {
-        StartCoroutine(LoadScenes("6. Admin Dashboard"));
+    public void lessonDnD() {
+        StartCoroutine(LoadScenes("Distance and Displacement Lesson"));
+    }
+
+    ///Lessons
+    public void lessonMicroscope() {
+        StartCoroutine(LoadScenes("Mircroscope lesson"));
+    }
+
+    public void lessonSpeednVelocity() {
+        StartCoroutine(LoadScenes("Lesson (Speed and Velocity)"));
+    }
+
+    public void lessonFaults() {
+        StartCoroutine(LoadScenes("Types of Fault"));
+    }
+
+    ///Simulations
+    public void simChooseDnD() {
+        StartCoroutine(LoadScenes("Choose Distance&Displacement Simulations 1"));
+    }
+    public void simChooseSnV() {
+        StartCoroutine(LoadScenes("Choose SpeedVelocity"));
+    }
+    public void simRobo() {
+        StartCoroutine(LoadScenes("RoboDistance"));
+    }
+    public void simMicroscopeMenu() {
+        StartCoroutine(LoadScenes("1. Microscope Start Screen (Temp)"));
+    }
+    public void simMicroscopeFocus() {
+        StartCoroutine(LoadScenes("2. Explore Microscope Specimen"));
+    }
+    public void simMicroscopeParts() {
+        StartCoroutine(LoadScenes("3. Learning Microscope Parts"));
+    }
+    public void simFarm() {
+        StartCoroutine(LoadScenes("Distance and Displacement"));
+    }
+    public void simCity() {
+        StartCoroutine(LoadScenes("CityRoad"));
+    }
+    public void simMarble() {
+        StartCoroutine(LoadScenes("MarbleRace"));
+    }
+    public void simFaults() {
+        StartCoroutine(LoadScenes("TypeOfFaultSim"));
     }
     
     IEnumerator LoadScenes(string SceneIndex) //To control the speed of the transition
