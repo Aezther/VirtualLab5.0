@@ -121,6 +121,25 @@ public class FadeSceneChanger : MonoBehaviour
         StartCoroutine(LoadScenes("TypeOfFaultSim"));
     }
     
+    public void TeacherMenuToTeacherUserManagement(){
+        StartCoroutine(LoadScenes("4. New Teacher UserManagement"));
+    }
+    public void TeacherMenuToAssessmentRecords(){
+        StartCoroutine(LoadScenes("8. Teacher Assessment Records"));
+    }
+    public void UsermanagementToTeacheRMainMenu(){
+        StartCoroutine(LoadScenes("3. TeacherDashboard"));
+    }
+
+    public void AdminMenuToAssessmentRecords(){
+        StartCoroutine(LoadScenes("8. Admin Assessment Records 1"));
+    }
+    public void AdminUsermanagementButtonToAdminMainMenu(){
+        StartCoroutine(LoadScenes("6. Admin Dashboard"));
+    }
+    public void AdminAssessmentRecordsToMainMenu(){
+        StartCoroutine(LoadScenes("6. Admin Dashboard"));
+    }
     IEnumerator LoadScenes(string SceneIndex) //To control the speed of the transition
     {
         //play the animation using trigger

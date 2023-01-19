@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731715, g: 0.13414735, b: 0.121078536, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2500,7 +2500,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 500200265}
         m_TargetAssemblyTypeName: FadeSceneChanger, Assembly-CSharp
-        m_MethodName: btnHomeToAdminDashboard
+        m_MethodName: UsermanagementToTeacheRMainMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3547,7 +3547,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Admin
+  m_text: Teacher
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 878aa00e229183e4a9a426a11c730e4f, type: 2}
   m_sharedMaterial: {fileID: 3622618128632193355, guid: 878aa00e229183e4a9a426a11c730e4f, type: 2}
@@ -6037,7 +6037,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 380.075}
+  m_AnchoredPosition: {x: 0, y: 380.0744}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &4837115421077411077
@@ -7596,7 +7596,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 293798214907874129}
   m_Direction: 2
   m_Value: 1
-  m_Size: 1
+  m_Size: 0.9999875
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
