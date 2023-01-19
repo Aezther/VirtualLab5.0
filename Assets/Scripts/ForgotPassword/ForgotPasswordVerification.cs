@@ -37,25 +37,39 @@ public class ForgotPasswordVerification : MonoBehaviour
         connectionString = "Data Source = C:\\Users\\Ian\\OneDrive\\Documents\\VirtualLab\\VirtualLab.db";
 
     }
-
+    public void first(){
+        ValidateID();
+        //GetTeacherID();
+    }
+    //CHECK IF USER ID HAS A SECURITY QUESTION
     public void ValidateID (){
         using (IDbConnection dbConnection = new SqliteConnection(connectionString)) {
             dbConnection.Open();
             using (IDbCommand dbCmd = dbConnection.CreateCommand()) {
-                //start
-                sqlQuery = "SELECT TeacherID FROM TeachersTBL;";
+                sqlQuery = "SELECT TeacherID FROM SecurityQuestionsTeachersTBL";
                 dbCmd.CommandText = sqlQuery;
                 using (IDataReader reader = dbCmd.ExecuteReader()) {
-                    // reinstantiate all child
                     while (reader.Read()) {
-                        listofTeacherID = reader.GetString(0);
-                        if (listofTeacherID == TeacherID.text){
+                        Debug.Log(reader.GetString(0));
+                        string listofTeacherIDwithSQuestions = reader.GetString(0);
+                        
+
+                        if (listofTeacherIDwithSQuestions == TeacherID.text){
+                            TeacherIDError.text = "Success!.";
                             AskSecurityQuestion.SetActive(true);
                             GetTeacherID();
+                            //TeacherID.text = ""; //should not clear input field
+                            TeacherIDError.text = ""; // clear error message
+                            
+                            return;
                         }else{
-                            TeacherIDError.text = "Teacher ID doesn't exist.";
-                        }
-                        Debug.Log(listofTeacherID);
+                            if(string.IsNullOrEmpty(TeacherID.text)){
+                                TeacherIDError.text = "TeacherID Inputfield is empty.";
+                            }
+                            else if(listofTeacherIDwithSQuestions != TeacherID.text){
+                                TeacherIDError.text = "Invalid ID or Security question was not established.";
+                            }
+                        } 
                     }
                     reader.Close();
                 //end
@@ -77,7 +91,7 @@ public class ForgotPasswordVerification : MonoBehaviour
                     // reinstantiate all child
                     while (reader.Read()) {
                         string Question = reader.GetString(0);
-                        
+                        Debug.Log(Question);
                         SecurityQuestionDisplayText.text = Question;
                     }
                     reader.Close();
@@ -88,7 +102,7 @@ public class ForgotPasswordVerification : MonoBehaviour
             dbConnection.Close();
         }
     }
-
+    //CHECK ANSWER IF CORRECT, IT WILL PROCEED TO QUESTION
     public void CheckAnswer(){
         using (IDbConnection dbConnection = new SqliteConnection(connectionString)) {
             dbConnection.Open();
@@ -97,7 +111,6 @@ public class ForgotPasswordVerification : MonoBehaviour
                 sqlQuery = "SELECT Question, Answer FROM SecurityQuestionsTeachersTBL WHERE TeacherID = '"+TeacherID.text+"';";
                 dbCmd.CommandText = sqlQuery;
                 using (IDataReader reader = dbCmd.ExecuteReader()) {
-                    // reinstantiate all child
                     while (reader.Read()) {
                         string Question = reader.GetString(0);
                         string Answer = reader.GetString(1);
@@ -106,14 +119,17 @@ public class ForgotPasswordVerification : MonoBehaviour
                         if (SecurityQuestionAnswer.text == Answer){
                             Debug.Log("Success");
                             AskNewPassword.SetActive(true);
-                        }
-                        if (SecurityQuestionAnswer.text != Answer){
-                            SecurityQuestionAnswerError.text = "Incorrect Answer";
                             return;
+                        }else{
+                            if (string.IsNullOrEmpty(SecurityQuestionAnswer.text)){
+                                SecurityQuestionAnswerError.text = "Answer inputfield is empty.";
+
+                            }else if(Answer!=SecurityQuestionAnswer.text){
+                                SecurityQuestionAnswerError.text = "Invalid Answer";
+
+                            }
                         }
-                        else{
-                            SecurityQuestionAnswerError.text = "";
-                        }
+                        
                     }
                     reader.Close();
                 }
@@ -211,5 +227,18 @@ public class ForgotPasswordVerification : MonoBehaviour
 
             dbConnection.Close();
         }
+    }
+    
+    public void NewPasswordVisibilityShow(){
+        SetNewPassword.inputType = TMP_InputField.InputType.Standard;
+    }
+    public void NewPasswordVisibilityHide(){
+        SetNewPassword.contentType = TMP_InputField.ContentType.Password;
+    }
+    public void ConfirmPasswordVisibilityShow(){
+        SetConfirmNewPassword.inputType = TMP_InputField.InputType.Standard;
+    }
+    public void ConfirmPasswordVisibilityHide(){
+        SetConfirmNewPassword.contentType = TMP_InputField.ContentType.Password;
     }
 }
