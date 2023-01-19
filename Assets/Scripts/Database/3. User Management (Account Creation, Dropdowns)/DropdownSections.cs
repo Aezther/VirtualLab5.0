@@ -17,7 +17,8 @@ public class DropdownSections : MonoBehaviour
     private string connectionString;
     void Start()
     {
-        connectionString = "Data Source = C:\\Users\\Ian\\OneDrive\\Documents\\VirtualLab\\VirtualLab.db";
+        //connectionString = "Data Source = C:\\Users\\Ian\\OneDrive\\Documents\\VirtualLab\\VirtualLab.db";
+        connectionString = "Data Source = C:\\Users\\oliva\\Documents\\VirtualLab\\VirtualLab.db";
         Display();
     }
     void Update() 

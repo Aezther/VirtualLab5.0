@@ -37,6 +37,8 @@ public class DisplayDBValues : MonoBehaviour
     [Header("Assessment Values")]
     [SerializeField] GameObject ARheaderPrefab;
     [SerializeField] GameObject ARcontentParent;
+    [SerializeField] Text selectedLesson;
+
     private TextMeshProUGUI[] ARTextCompList;
 
 
@@ -45,15 +47,23 @@ public class DisplayDBValues : MonoBehaviour
     private string connectionString;
     void Start()
     {
-        connectionString = "Data Source = C:\\Users\\Ian\\OneDrive\\Documents\\VirtualLab\\VirtualLab.db";
-        //connectionString = "Data Source = C:\\Users\\oliva\\Documents\\VirtualLab\\VirtualLab.db";
+        //connectionString = "Data Source = C:\\Users\\Ian\\OneDrive\\Documents\\VirtualLab\\VirtualLab.db";
+        connectionString = "Data Source = C:\\Users\\oliva\\Documents\\VirtualLab\\VirtualLab.db";
 
-        DisplayStudentAccRecMain();
-        DisplayStudentAccRecPreview();
+        if (ACT_content && ACT_contentPreview && filteredTeacherHeaderPrefab)
+        {
+            DisplayStudentAccRecMain();
+            DisplayStudentAccRecPreview();
+        }
 
-        DisplayTeacherAccRecMain();
-        DisplayTeacherAccRecPreview();
-        DisplayLogsToScrollView();
+        if (ACS_content && ACS_contentPreview && filteredStudentHeaderPrefab)
+        {
+            DisplayTeacherAccRecMain();
+            DisplayTeacherAccRecPreview();
+            DisplayLogsToScrollView();
+        }
+
+        DisplayARToScrollView("Types of Faults");
 
     }
 
@@ -354,17 +364,6 @@ public class DisplayDBValues : MonoBehaviour
         }
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     public void DisplayLogsToScrollView()
     {
         // delete all child 
@@ -408,7 +407,7 @@ public class DisplayDBValues : MonoBehaviour
             dbConnection.Close();
         }
     }
-    public void DisplayARToScrollView()
+    public void DisplayARToScrollView( string selectedLesson)
     {
         // delete all child 
         foreach (Transform child in ARcontentParent.transform)
@@ -421,7 +420,7 @@ public class DisplayDBValues : MonoBehaviour
             dbConnection.Open();
             using (IDbCommand dbCmd = dbConnection.CreateCommand())
             {
-                string sqlQuery = "SELECT Lastname, Firstname, Section, Subject, Score FROM ScoresTBL  INNER JOIN StudentsTBL ON StudentsTBL.StudentID = ScoresTBL.StudentID";
+                string sqlQuery = "SELECT Username, Lastname, Firstname, Section, Score, Date FROM ScoresTBL INNER JOIN StudentsTBL ON StudentsTBL.StudentID = ScoresTBL.StudentID WHERE ScoresTBL.Lesson = '"+selectedLesson+"';";
                 dbCmd.CommandText = sqlQuery;
                 using (IDataReader reader = dbCmd.ExecuteReader())
                 {
@@ -436,12 +435,14 @@ public class DisplayDBValues : MonoBehaviour
 
                         ARTextCompList = userHeader.gameObject.GetComponentsInChildren<TextMeshProUGUI>();
 
-                        Debug.Log(textCompList[0].gameObject.name);
+                        Debug.Log(ARTextCompList[0].gameObject.name);
                         ARTextCompList[0].text = reader.GetString(0);
                         ARTextCompList[1].text = reader.GetString(1);
                         ARTextCompList[2].text = reader.GetString(2);
                         ARTextCompList[3].text = reader.GetString(3);
                         ARTextCompList[4].text = reader.GetInt32(4).ToString();
+                        ARTextCompList[5].text = reader.GetString(5);
+
                     }
                     reader.Close();
 

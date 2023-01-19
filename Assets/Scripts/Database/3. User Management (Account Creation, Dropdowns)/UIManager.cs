@@ -18,6 +18,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] Button logRecordsButton;
     [SerializeField] GameObject refreshButton;
 
+    [SerializeField] Button[] lessonButtonsList;
+
 
     // Start is called before the first frame update
     void Start()
@@ -43,12 +45,16 @@ public class UIManager : MonoBehaviour
 
     public void OpenUserManagement()
     {
-        refreshButton.SetActive(false);
-        logRecordsButton.interactable = true;
-        createAccButton.interactable = false;
+        if (refreshButton && logRecordsButton && createAccButton && createAccountPanel && logSessionPanel)
+        {
+            refreshButton.SetActive(false);
+            logRecordsButton.interactable = true;
+            createAccButton.interactable = false;
 
-        createAccountPanel.SetActive(true);
-        logSessionPanel.SetActive(false);
+            createAccountPanel.SetActive(true);
+            logSessionPanel.SetActive(false);
+        }
+ 
     }
 
     public void OpenMaximizedAccRecs()
@@ -64,4 +70,6 @@ public class UIManager : MonoBehaviour
         maximizedAccRecordPanel.SetActive(false);
 
     }
+
+
 }
