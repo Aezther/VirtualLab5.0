@@ -12,13 +12,13 @@ EditorBuildSettings:
     path: Assets/Scenes/Dashboard/2. Login Screen.unity
     guid: b14a6557c3d1d4f4583e0492f87b25fe
   - enabled: 1
-    path: Assets/Scenes/Dashboard/3. TeacherDashboard.unity
+    path: Assets/Scenes/Dashboard/Teacher/3. TeacherDashboard.unity
     guid: 2005345bd0efb194a9a665c64f37427c
   - enabled: 1
-    path: Assets/Scenes/Dashboard/4. Admin UserManagement.unity
+    path: Assets/Scenes/Dashboard/Admin/4. Admin UserManagement.unity
     guid: fc39d9b1e3a47c646935470e0ede34d3
   - enabled: 1
-    path: Assets/Scenes/Dashboard/6. Admin Dashboard.unity
+    path: Assets/Scenes/Dashboard/Admin/6. Admin Dashboard.unity
     guid: c03aea40bbc7a0d44a9bbf1a7947af34
   - enabled: 1
     path: Assets/Scenes/Dashboard/7. Lessons.unity
@@ -27,7 +27,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Dashboard/5. Simulations.unity
     guid: 274400d3dcb760b44877c497fc6211fe
   - enabled: 1
-    path: Assets/Scenes/Dashboard/4. Teacher UserManagement.unity
+    path: Assets/Scenes/Dashboard/Teacher/4. Teacher UserManagement.unity
     guid: bf4a70bbb461fc44dbefe2ca838851db
   - enabled: 1
     path: Assets/Scenes/Lessons/Distance and Displacement Lesson.unity
@@ -67,6 +67,18 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Simulations/Speed and Velocity/Scenes [SNV]/MarbleRace.unity
     guid: 73da383e87da41141b30cc6155eeadd1
+  - enabled: 1
+    path: Assets/Scenes/Dashboard/Backup/4. Admin UserManagement 1.unity
+    guid: e50534e68ac578c4ea2653fa0e1186bf
+  - enabled: 1
+    path: Assets/Scenes/Dashboard/Teacher/4. New Teacher UserManagement.unity
+    guid: 4b841e9e629032f45a815ed3b63a59eb
+  - enabled: 1
+    path: Assets/Scenes/Dashboard/Admin/8. Admin Assessment Records 1.unity
+    guid: 96d95fdcde394d6468954db7e2be6a94
+  - enabled: 1
+    path: Assets/Scenes/Dashboard/Teacher/8. Teacher Assessment Records.unity
+    guid: 15e4e20ce75601d4fa57924a8127b82f
   - enabled: 1
     path: Assets/Scenes/Simulations/Types of Fault/Scenes/TypeOfFaultSim.unity
     guid: 605ad41a90029754d9e1a34845e91015

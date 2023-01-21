@@ -11,13 +11,20 @@ using Unity.VisualScripting;
 using JetBrains.Annotations;
 using System.Xml.Linq;
 using System.Text.RegularExpressions;
+using static System.Collections.Specialized.BitVector32;
+using UnityEngine.Assertions;
 
 public class UserManagementScript : MonoBehaviour {
     DropdownUserType dropdownUserType; //empty script reference. 1st
     DropdownSections dropdownSections; //empty script reference. 1st 
+    DropdownSections dropdownSelectedSection; //empty script reference. 1st 
+
+
     [Header("DROPDOWN SCRIPT REFERENCES")]
     [SerializeField] GameObject DDUserType; //Getting Object Script Component 2nd
     [SerializeField] GameObject DDSection; //Getting Object Script Component 2nd 
+    [SerializeField] GameObject DDSelectedSection; //Getting Object Script Component 2nd 
+
 
     [Header("INPUTFIELD MAIN")]
     public TMP_InputField UserID;
@@ -46,6 +53,9 @@ public class UserManagementScript : MonoBehaviour {
     [Header("NOTIFICATIONS")]
     public GameObject SucessfulAccountCreation;
 
+    [Header("NOTIFICATIONS")]
+    [SerializeField] string selSec;
+
     private string connectionString;
     private string sqlQuery;
 
@@ -58,9 +68,13 @@ public class UserManagementScript : MonoBehaviour {
     void Awake() { //INITIALIZING REFERENCES TO ACCESS SCRIPTS IN ANOTHER OBJECT
         dropdownUserType = DDUserType.GetComponent<DropdownUserType>(); // 3rd 
         dropdownSections = DDSection.GetComponent<DropdownSections>(); // 3rd
+        dropdownSelectedSection = DDSelectedSection.GetComponent<DropdownSections>(); // 3rd
+
     }
     void Start() {
+
         connectionString = "Data Source = C:\\Users\\Ian\\OneDrive\\Documents\\VirtualLab\\VirtualLab.db";
+        connectionString = "Data Source = C:\\Users\\oliva\\Documents\\VirtualLab\\VirtualLab.db";
 
 
     }
@@ -68,7 +82,7 @@ public class UserManagementScript : MonoBehaviour {
         GetValueUsername();
     }
 
-    public void Validation (){
+    public void Validation() {
         UserIDValidation();
         passwordValidation();
         ConfirmPassValidation();
@@ -90,13 +104,13 @@ public class UserManagementScript : MonoBehaviour {
                         DBStudentID = reader.GetString(0);
                         //Debug.Log(reader.GetString(0));
 
-                        if (dropdownUserType.SelectedUserType == "Student" && UserID.text ==DBStudentID){
+                        if (dropdownUserType.SelectedUserType == "Student" && UserID.text == DBStudentID) {
                             UserIDError.text = "Student ID is taken.";
                             return;
-                        }else{
+                        } else {
                             UserIDError.text = "";
                         }
-                    }   
+                    }
                     reader.Close();
                 }
                 //TRAP SAME TEACHERID IN TEACHER ACCOUNT CREATION.
@@ -108,97 +122,97 @@ public class UserManagementScript : MonoBehaviour {
                         //Debug.Log(DBStudentID);
                         //Debug.Log(reader.GetString(0))
                         //Debug.Log(reader.GetString(0));
-                        if (dropdownUserType.SelectedUserType == "Teacher" && UserID.text ==DBTeacherID){
+                        if (dropdownUserType.SelectedUserType == "Teacher" && UserID.text == DBTeacherID) {
                             UserIDError.text = "Teacher ID is taken.";
                             return;
-                        }else{
-                             UserIDError.text = "";
+                        } else {
+                            UserIDError.text = "";
                         }
                     }
                     reader.Close();
                 }
                 //USERID EMPTY
-                if (string.IsNullOrEmpty(UserID.text)){
+                if (string.IsNullOrEmpty(UserID.text)) {
                     UserIDError.text = "";
                     UserIDError.text = "User ID is empty.";
                     return;
-                }else{
+                } else {
                     UserIDError.text = "";
                 }
                 //USERID SPACES
-                if (string.IsNullOrWhiteSpace(UserID.text.Trim())){
+                if (string.IsNullOrWhiteSpace(UserID.text.Trim())) {
                     UserIDError.text = "";
                     UserIDError.text = "User ID contains spaces.";
                     return;
-                }else {
+                } else {
                     UserIDError.text = "";
                 }
                 //USERID DOESN'T ACCEPT WHITE SPACES
                 if (Regex.IsMatch(UserID.text, @"\s")) {
                     UserIDError.text = "Input contains whitespace.";
                     return;
-                }else{
+                } else {
                     UserIDError.text = "";
                 }
                 if (!Regex.IsMatch(UserID.text, "^[a-zA-Z0-9]+$")) {
                     UserIDError.text = "Invalid Characters.";
-                }else {
+                } else {
                     UserIDError.text = "";
                 }
                 dbConnection.Close();
             }
         }
     }
-    public void passwordValidation(){
-        if (string.IsNullOrEmpty(Password.text)){
+    public void passwordValidation() {
+        if (string.IsNullOrEmpty(Password.text)) {
             passError.text = "Password field is empty.";
             return;
-        }else{
-             passError.text ="";
+        } else {
+            passError.text = "";
         }
-        if (string.IsNullOrWhiteSpace(Password.text.Trim())){
+        if (string.IsNullOrWhiteSpace(Password.text.Trim())) {
             passError.text = "Password contains spaces.";
             return;
-        }else{
-            passError.text ="";
+        } else {
+            passError.text = "";
         }
-        if (Password.text.Length < 8){
+        if (Password.text.Length < 8) {
             passError.text = "Password must be at least 8 characters long.";
-        }else{
-            passError.text ="";
+        } else {
+            passError.text = "";
         }
     }
-    public void ConfirmPassValidation(){
-        if (string.IsNullOrEmpty(ConfirmPassword.text)){
+    public void ConfirmPassValidation() {
+        if (string.IsNullOrEmpty(ConfirmPassword.text)) {
             conpassError.text = "Confirm Password field is empty.";
             return;
-        }else{
-            conpassError.text ="";
+        } else {
+            conpassError.text = "";
         }
-        if (string.IsNullOrWhiteSpace(ConfirmPassword.text.Trim())){
+        if (string.IsNullOrWhiteSpace(ConfirmPassword.text.Trim())) {
             conpassError.text = "Confirm Password contains spaces.";
             return;
-        }else{
-            conpassError.text ="";
+        } else {
+            conpassError.text = "";
         }
 
-        if (Password.text != ConfirmPassword.text){
+        if (Password.text != ConfirmPassword.text) {
             conpassError.text = "Passwords do not match.";
             return;
-        } 
+        }
     }
-    public void FirstNameValidation(){
-        if (string.IsNullOrEmpty(FirstName.text)){
+    public void FirstNameValidation() {
+        if (string.IsNullOrEmpty(FirstName.text)) {
             firstNameError.text = "Firstname is Empty.";
             return;
-        }else{
-            firstNameError.text ="";
+        } else {
+            firstNameError.text = "";
         }
-        if (string.IsNullOrWhiteSpace(FirstName.text)){
+        if (string.IsNullOrWhiteSpace(FirstName.text)) {
             firstNameError.text = "Firstname contains spaces.";
             return;
-        }else {
-            firstNameError.text ="";
+        } else {
+            firstNameError.text = "";
         }
         if (!Regex.IsMatch(FirstName.text, "^[a-zA-Z0-9 ]*$")) {
             firstNameError.text = "Invalid Characters.";
@@ -207,18 +221,18 @@ public class UserManagementScript : MonoBehaviour {
             firstNameError.text = "";
         }
     }
-    public void LastNameValidation(){
-        if (string.IsNullOrEmpty(LastName.text)){
+    public void LastNameValidation() {
+        if (string.IsNullOrEmpty(LastName.text)) {
             lastnameError.text = "Lastname is Empty.";
             return;
-        }else{
-            lastnameError.text ="";
+        } else {
+            lastnameError.text = "";
         }
-        if (string.IsNullOrWhiteSpace(LastName.text)){
+        if (string.IsNullOrWhiteSpace(LastName.text)) {
             lastnameError.text = "Lastname contains spaces.";
             return;
-        }else {
-            lastnameError.text ="";
+        } else {
+            lastnameError.text = "";
         }
         if (!Regex.IsMatch(LastName.text, "^[a-zA-Z0-9 ]+$")) {
             lastnameError.text = "Invalid Characters.";
@@ -227,12 +241,12 @@ public class UserManagementScript : MonoBehaviour {
             lastnameError.text = "";
         }
     }
-    public void SuccessfullRegistration(){
+    public void SuccessfullRegistration() {
         using (IDbConnection dbConnection = new SqliteConnection(connectionString)) {
             dbConnection.Open();
             using (IDbCommand dbCmd = dbConnection.CreateCommand()) {
                 //STUDENTS
-                if ((dropdownUserType.SelectedUserType == ("Student")) &&((dropdownUserType.SelectedUserType == "Student" && UserID.text != DBStudentID)) && (!string.IsNullOrEmpty(UserID.text)) &&
+                if ((dropdownUserType.SelectedUserType == ("Student")) && ((dropdownUserType.SelectedUserType == "Student" && UserID.text != DBStudentID)) && (!string.IsNullOrEmpty(UserID.text)) &&
                     (!string.IsNullOrWhiteSpace(UserID.text.Trim())) && (!Regex.IsMatch(UserID.text, @"\s")) && (Regex.IsMatch(UserID.text, "^[a-zA-Z0-9]+$")) &&
                     (!string.IsNullOrEmpty(Password.text)) && (!string.IsNullOrWhiteSpace(Password.text.Trim())) && (Password.text.Length > 8) &&
                     (!string.IsNullOrEmpty(ConfirmPassword.text)) && (!string.IsNullOrWhiteSpace(ConfirmPassword.text.Trim())) && (Password.text == ConfirmPassword.text) &&
@@ -243,12 +257,12 @@ public class UserManagementScript : MonoBehaviour {
 
                     //start
                     sqlQuery = "INSERT INTO StudentsTBL (StudentID, Username, Password, Firstname, Middlename, Lastname, Section) VALUES ( '" +
-                        UserID.text + "','" + 
-                        UserName.text + "','" + 
-                        Password.text + "','" + 
-                        FirstName.text + "','" + 
-                        MiddleName.text + "','" + 
-                        LastName.text + "','" + 
+                        UserID.text + "','" +
+                        UserName.text + "','" +
+                        Password.text + "','" +
+                        FirstName.text + "','" +
+                        MiddleName.text + "','" +
+                        LastName.text + "','" +
                         dropdownSections.SelectedSection + "');";
                     Debug.Log("Student Account has been created!");
                     dbCmd.CommandText = sqlQuery;
@@ -270,7 +284,7 @@ public class UserManagementScript : MonoBehaviour {
                 }
 
                 //TEACHER
-                if ((dropdownUserType.SelectedUserType == ("Teacher")) &&((dropdownUserType.SelectedUserType == "Teacher" && UserID.text != DBTeacherID)) && (!string.IsNullOrEmpty(UserID.text)) &&
+                if ((dropdownUserType.SelectedUserType == ("Teacher")) && ((dropdownUserType.SelectedUserType == "Teacher" && UserID.text != DBTeacherID)) && (!string.IsNullOrEmpty(UserID.text)) &&
                     (!string.IsNullOrWhiteSpace(UserID.text.Trim())) && (!Regex.IsMatch(UserID.text, @"\s")) && (Regex.IsMatch(UserID.text, "^[a-zA-Z0-9]+$")) &&
                     (!string.IsNullOrEmpty(Password.text)) && (!string.IsNullOrWhiteSpace(Password.text.Trim())) && (Password.text.Length > 8) &&
                     (!string.IsNullOrEmpty(ConfirmPassword.text)) && (!string.IsNullOrWhiteSpace(ConfirmPassword.text.Trim())) && (Password.text == ConfirmPassword.text) &&
@@ -280,12 +294,12 @@ public class UserManagementScript : MonoBehaviour {
                     Debug.Log("Success!");
 
                     //start
-                    sqlQuery = "INSERT INTO TeachersTBL (TeacherID, Username, Password, Firstname, Middlename, Lastname) VALUES ( '" + 
-                        UserID.text + "','" + 
-                        UserName.text + "','" + 
-                        Password.text + "','" + 
-                        FirstName.text + "','" + 
-                        MiddleName.text + "','" + 
+                    sqlQuery = "INSERT INTO TeachersTBL (TeacherID, Username, Password, Firstname, Middlename, Lastname) VALUES ( '" +
+                        UserID.text + "','" +
+                        UserName.text + "','" +
+                        Password.text + "','" +
+                        FirstName.text + "','" +
+                        MiddleName.text + "','" +
                         LastName.text + "');";
                     Debug.Log("Teacher Account has been created!");
 
@@ -338,6 +352,75 @@ public class UserManagementScript : MonoBehaviour {
             dbConnection.Close();
         }
     }
+
+    public void DeleteSection()
+    {
+        using (IDbConnection dbConnection = new SqliteConnection(connectionString))
+        {
+            dbConnection.Open();
+            using (IDbCommand dbCmd = dbConnection.CreateCommand())
+            {
+                // insert to archive table
+                sqlQuery = "INSERT INTO SectionsArchiveTBL(Sections) VALUES('" + dropdownSelectedSection.SelectedSection + "');";
+                Debug.Log("Section: "+dropdownSelectedSection.SelectedSection+" is archived Successfully!");
+                dbCmd.CommandText = sqlQuery;
+                dbCmd.ExecuteNonQuery();
+
+                //delete from table
+                sqlQuery = "DELETE FROM SectionsTBL WHERE Sections = '" + dropdownSelectedSection.SelectedSection + "';";
+                Debug.Log("Section: " + dropdownSelectedSection.SelectedSection + " is deleted Successfully!");
+                dbCmd.CommandText = sqlQuery;
+                dbCmd.ExecuteNonQuery();
+            }
+            dbConnection.Close();
+        }
+    }
+
+    public void RestoreSection(TextMeshProUGUI sec)
+    {
+        using (IDbConnection dbConnection = new SqliteConnection(connectionString))
+        {
+            dbConnection.Open();
+            using (IDbCommand dbCmd = dbConnection.CreateCommand())
+            {
+                sqlQuery = "DELETE FROM SectionsArchiveTBL WHERE Sections = '" + sec.text + "';";
+                // insert to archive table
+                dbCmd.CommandText = sqlQuery;
+                dbCmd.ExecuteNonQuery();
+
+                //delete from table
+                sqlQuery = "INSERT INTO SectionsTBL(Sections) VALUES('" + sec.text + "');";
+                Debug.Log("Section was restored Successfully!");
+                dbCmd.CommandText = sqlQuery;
+                dbCmd.ExecuteNonQuery();
+            }
+            dbConnection.Close();
+        }
+    }
+
+    public void DeleteSectionFromArchive()
+    {
+        using (IDbConnection dbConnection = new SqliteConnection(connectionString))
+        {
+            dbConnection.Open();
+            using (IDbCommand dbCmd = dbConnection.CreateCommand())
+            {
+                sqlQuery = "DELETE FROM SectionsArchiveTBL WHERE Sections = '" + selSec + "';";
+                // insert to archive table
+                dbCmd.CommandText = sqlQuery;
+                dbCmd.ExecuteNonQuery();
+            }
+            dbConnection.Close();
+        }
+    }
+
+    public void SelectSectionInstance(TextMeshProUGUI selSection)
+    {
+        selSec = selSection.text;
+        Debug.Log("Currently selected section: " + selSec);
+
+    }
+
     public void GetValueUsername() {
         UserName.text = LastName.text + "." + UserID.text;
 

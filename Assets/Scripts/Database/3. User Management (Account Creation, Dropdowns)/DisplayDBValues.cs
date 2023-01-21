@@ -40,9 +40,13 @@ public class DisplayDBValues : MonoBehaviour
     [SerializeField] string selectedLesson = "Types of Faults";
     [SerializeField] Button[] lessonButtonList;
     [SerializeField] TMP_InputField ARsearchInput;
-
-
     private TextMeshProUGUI[] ARTextCompList;
+
+    [Header("Sections Archive Values")]
+    [SerializeField] GameObject sArchHeaderPrefab;
+    [SerializeField] GameObject sArchContentParent;
+    private TextMeshProUGUI[] sArchTextCompList;
+
 
 
 
@@ -51,7 +55,7 @@ public class DisplayDBValues : MonoBehaviour
     void Start()
     {
         //connectionString = "Data Source = C:\\Users\\Ian\\OneDrive\\Documents\\VirtualLab\\VirtualLab.db";
-        connectionString = "Data Source = C:\\Users\\Ian\\OneDrive\\Documents\\VirtualLab\\VirtualLab.db";
+        connectionString = "Data Source = C:\\Users\\oliva\\Documents\\VirtualLab\\VirtualLab.db";
 
         if (ACT_content && ACT_contentPreview && filteredTeacherHeaderPrefab)
         {
@@ -450,6 +454,48 @@ public class DisplayDBValues : MonoBehaviour
                         ARTextCompList[3].text = reader.GetString(3);
                         ARTextCompList[4].text = reader.GetInt32(4).ToString();
                         ARTextCompList[5].text = reader.GetString(5);
+
+                    }
+                    reader.Close();
+
+                }
+                dbCmd.ExecuteNonQuery();
+            }
+            dbConnection.Close();
+        }
+    }
+
+    public void DisplaySectionArchive()
+    {
+        // delete all child 
+        foreach (Transform child in sArchContentParent.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        using (IDbConnection dbConnection = new SqliteConnection(connectionString))
+        {
+            dbConnection.Open();
+            using (IDbCommand dbCmd = dbConnection.CreateCommand())
+            {
+                string sqlQuery = "SELECT Sections FROM SectionsArchiveTBL;";
+
+                dbCmd.CommandText = sqlQuery;
+                using (IDataReader reader = dbCmd.ExecuteReader())
+                {
+                    // reinstantiate all child
+                    while (reader.Read())
+                    {
+                        // one loop = 1 user
+                        //Debug.Log(reader.GetString(0) + " " + reader.GetString(1) + " " + reader.GetString(2) + " " + reader.GetString(3) + " " + reader.GetString(4));
+                        // create prefab
+                        // modify value
+                        GameObject userHeader = GameObject.Instantiate(sArchHeaderPrefab, sArchContentParent.transform);
+                         userHeader.SetActive(true);
+                        sArchTextCompList = userHeader.gameObject.GetComponentsInChildren<TextMeshProUGUI>();
+
+                        sArchTextCompList[0].text = reader.GetString(0);
+                       
 
                     }
                     reader.Close();
