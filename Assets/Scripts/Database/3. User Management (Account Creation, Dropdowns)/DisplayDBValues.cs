@@ -51,7 +51,7 @@ public class DisplayDBValues : MonoBehaviour
     void Start()
     {
         //connectionString = "Data Source = C:\\Users\\Ian\\OneDrive\\Documents\\VirtualLab\\VirtualLab.db";
-        connectionString = "Data Source = C:\\Users\\Ian\\OneDrive\\Documents\\VirtualLab\\VirtualLab.db";
+        connectionString = "Data Source = A:\\VirtualLab.db";
 
         if (ACT_content && ACT_contentPreview && filteredTeacherHeaderPrefab)
         {

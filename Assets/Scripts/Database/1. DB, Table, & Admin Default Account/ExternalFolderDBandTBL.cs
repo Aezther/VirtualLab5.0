@@ -13,7 +13,7 @@ public class ExternalFolderDBandTBL : MonoBehaviour
     void Start()
     {
         //connectionString = "Data Source = C:\\Users\\Ian\\OneDrive\\Documents\\VirtualLab\\VirtualLab.db";
-        connectionString = "Data Source = C:\\Users\\Ian\\OneDrive\\Documents\\VirtualLab\\VirtualLab.db";
+        connectionString = "Data Source = C:\\Users\\oliva\\Documents\\VirtualLab\\VirtualLab.db";
 
         CreateFolder();
         CreateDB();
