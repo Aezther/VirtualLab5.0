@@ -10,38 +10,203 @@ using UnityEngine.SceneManagement;
 public class LoginTeacherAdminScript : MonoBehaviour
 {
     public Animator transition;
+    [Header ("InputFields")]
     public TMP_InputField userInput;
     public TMP_InputField passInput;
+
+    [Header("Error Messages")]
+    public TextMeshProUGUI userError;
+    public TextMeshProUGUI passError;
+    private string connectionString;
+    private string sqlQuery;
+    //get teacher id
+    private string TeacherIDInfo;
+    //get time
+    private string timeLoggedIn;
+    [SerializeField] TeacherInfo teacherInfo;
     void Start()
     {
-        LoginAdmin();
+        //connectionString = "Data Source = C:\\Users\\Ian\\OneDrive\\Documents\\VirtualLab\\VirtualLab.db";
+        connectionString = "Data Source = C:\\Users\\Ian\\OneDrive\\Documents\\VirtualLab\\VirtualLab.db";
     }
-    public void LoginAdmin() {
-        string conn = "URI=file:" + Application.streamingAssetsPath + "/Database/" + "/VirtualDB.db"; //path to database, will read anything inside assets
-        IDbConnection dbconn;//established a connection
-        dbconn = (IDbConnection)new SqliteConnection(conn);
-        dbconn.Open(); //open connection to the database
-        IDbCommand dbcmd = dbconn.CreateCommand();
-        string sqlQuery = "SELECT Username, Password FROM AdminsAccTBL;";
-        dbcmd.CommandText = sqlQuery;
-        IDataReader reader = dbcmd.ExecuteReader();
-        while (reader.Read()) {
-            if (reader["Username"].Equals(userInput.text) && reader["Password"].Equals(passInput.text)) {
-                StartCoroutine(LoadScenes("3. Admin Dashboard"));
 
-                Debug.Log("Successful Login! Welcome! ");
+
+    public void AdminLogin(){
+        using (IDbConnection dbConnection = new SqliteConnection(connectionString)) {
+            dbConnection.Open();
+            using (IDbCommand dbCmd = dbConnection.CreateCommand()) {
+                
+                //start
+                sqlQuery = "SELECT Username, Password FROM AdminsAccTBL;";
+                dbCmd.CommandText = sqlQuery;
+                using (IDataReader reader = dbCmd.ExecuteReader()) 
+                {
+                    while (reader.Read()) 
+                    {
+                        string DBUsername = reader.GetString(0);
+                        string DBPassword = reader.GetString(1);
+                        //Successfull login
+                        if (DBUsername.Equals (userInput.text) && DBPassword.Equals(passInput.text) && !string.IsNullOrEmpty(passInput.text) && !string.IsNullOrEmpty(userInput.text)){
+                            userError.text = "";
+                            passError.text = "";
+                            StartCoroutine(LoadScenes("6. Admin Dashboard"));
+
+                            Debug.Log("Admin Successful Login! Welcome! ");
+                           
+                        }
+                    }
+                    reader.Close();
+                }
+                //End
+            }
+            dbConnection.Close();
+        }
+    }
+
+    
+
+    public void GetTeacherID() {
+        using (IDbConnection dbConnection = new SqliteConnection(connectionString)) {
+            dbConnection.Open();
+            using (IDbCommand dbCmd = dbConnection.CreateCommand()) {
+
+                //start
+                sqlQuery = "SELECT TeacherID FROM TeachersTBL WHERE Username = '" + userInput.text + "';";
+                //sqlQuery = "INSERT INTO StudentSessionsTBL (Action, Time, StudentID) VALUES ('Login','wawawa','1');";
+                dbCmd.CommandText = sqlQuery;
+                using (IDataReader reader = dbCmd.ExecuteReader()) {
+                    while (reader.Read()) {
+                        TeacherIDInfo = reader.GetString(0);
+                        //teacherInfo.TeacherID;
+                        teacherInfo.TeacherID = TeacherIDInfo;
+                        Debug.Log(TeacherIDInfo);
+                    }
+                    reader.Close();
+                }
+                dbConnection.Close();
             }
         }
-        reader.Close();
-        reader = null;
-        dbcmd.Dispose();
-        dbcmd = null;
-        dbconn.Close();
-        dbconn = null;
     }
-    public void LoginTeacher() {
+    public void GetTeacherCredentials(){
+        using (IDbConnection dbConnection = new SqliteConnection (connectionString)){
+            dbConnection.Open();
+            using (IDbCommand dbCmd = dbConnection.CreateCommand()) {
 
+                sqlQuery = "SELECT Firstname, Lastname FROM TeachersTBL WHERE Username = '" + userInput.text + "';";
+                dbCmd.CommandText = sqlQuery;
+                using (IDataReader reader = dbCmd.ExecuteReader()) {
+                    while (reader.Read()) {
+                        string Firstname = reader.GetString(0);
+                        string Lastname = reader.GetString(1);
+                        Debug.Log("Your name is " +Firstname+"," + Lastname );
+                        teacherInfo.TeacherFullname = Firstname+ " " + Lastname;
+                        //userInput.StudentName = Firstname.First().ToString().ToUpper() + Firstname.Substring(1) + " " + Lastname.First().ToString().ToUpper() + Lastname.Substring(1);
+                    }
+                    reader.Close();
+                }
+                dbConnection.Close();
+            }
+        }
     }
+    public void TeacherLogin() {
+        VerifyUsernameTeacher();
+        VerifyPasswordTeacher();
+        VerifyBothUserPass();
+    }
+    public void VerifyUsernameTeacher(){
+        using (IDbConnection dbConnection = new SqliteConnection(connectionString)) {
+            dbConnection.Open();
+            using (IDbCommand dbCmd = dbConnection.CreateCommand()) {
+                sqlQuery = "SELECT Username FROM TeachersTBL;";
+                dbCmd.CommandText = sqlQuery;
+                using (IDataReader reader = dbCmd.ExecuteReader()) {
+                    while (reader.Read()) {
+                        //empty username
+                        string DBUsername = reader.GetString(0);
+                        if (string.IsNullOrEmpty(userInput.text)) {
+                            userError.text = "Username is empty.";
+                            return;
+                        }else{
+                            userError.text = "";
+                        }
+                        //invalid input
+                        if (DBUsername != userInput.text && !string.IsNullOrEmpty(userInput.text)) {
+                            userError.text = "Invalid username.";
+                            return;
+                        }else{
+                            userError.text = "";
+                        }
+                    }
+                    reader.Close();
+                }
+            }
+            dbConnection.Close();
+        }
+    }
+    public void VerifyPasswordTeacher(){
+        using (IDbConnection dbConnection = new SqliteConnection(connectionString)) {
+            dbConnection.Open();
+            using (IDbCommand dbCmd = dbConnection.CreateCommand()) {
+                sqlQuery = "SELECT Password FROM TeachersTBL;";
+                dbCmd.CommandText = sqlQuery;
+                using (IDataReader reader = dbCmd.ExecuteReader()) {
+                    while (reader.Read()) {
+                        //empty password
+                        string DBPassword = reader.GetString(0);
+                        if (string.IsNullOrEmpty(passInput.text)) {
+                            passError.text = "Password is empty.";
+                            return;
+                        }else{
+                            passError.text = "";
+                        }
+                        //invalid input
+                        if (DBPassword != passInput.text && !string.IsNullOrEmpty(passInput.text)) {
+                            passError.text = "Invalid password.";
+                            return;
+                        }else{
+                            passError.text = "";
+                        }
+                    }
+                    reader.Close();
+                }
+            }
+            dbConnection.Close();
+        }
+    }
+    public void VerifyBothUserPass(){
+        using (IDbConnection dbConnection = new SqliteConnection(connectionString)) {
+            dbConnection.Open();
+            using (IDbCommand dbCmd = dbConnection.CreateCommand()) {
+                                sqlQuery = "SELECT Username, Password FROM TeachersTBL;";
+                dbCmd.CommandText = sqlQuery;
+                using (IDataReader reader = dbCmd.ExecuteReader()) {
+                    while (reader.Read()) {
+                        string DBUsername = reader.GetString(0);
+                        string DBPassword = reader.GetString(1);
+                        //Successfull login
+                        if (DBUsername.Equals(userInput.text) && DBPassword.Equals(passInput.text) && !string.IsNullOrEmpty(passInput.text) && !string.IsNullOrEmpty(userInput.text)) {
+                            
+                            StartCoroutine(LoadScenes("3. TeacherDashboard"));
+                            userError.text = "";
+                            passError.text = "";
+                            GetTeacherCredentials();
+                            //Debug.Log("Teacher Successful Login! Welcome! ");
+                            GetTeacherID();
+                        }
+                    }
+                    reader.Close();
+                //    timeLoggedIn = System.DateTime.UtcNow.ToLocalTime().ToString("dd-MM-yyyy HH:mm:ss tt");
+                //    sqlQuery = "INSERT INTO TeacherSessionsTBL (Action, Time, TeacherID) VALUES ('Log in','" + timeLoggedIn + "','" + TeacherIDInfo + "');";
+                //    Debug.Log(timeLoggedIn + TeacherIDInfo);
+                //    //sqlQuery = "INSERT INTO SectionsTBL (Sections) VALUES('Carlo');";
+                //    dbCmd.CommandText = sqlQuery;
+                //    dbCmd.ExecuteNonQuery();
+                }
+            }
+            dbConnection.Close();
+        }
+    }
+
     IEnumerator LoadScenes(string SceneIndex) //to control the speed of the transition
 {
         //play the animation using trigger

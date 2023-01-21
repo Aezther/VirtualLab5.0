@@ -7,30 +7,30 @@ using System.IO;
 using TMPro;
 using UnityEngine.UI;
 using System;
-using static UnityEditor.ShaderData;
+//using static UnityEditor.ShaderData;
 
 public class DropdownSections : MonoBehaviour
 {
     public TMP_Dropdown dropdownSection;
     public string SelectedSection;
     public int index;
+    private string connectionString;
     void Start()
     {
+        //connectionString = "Data Source = C:\\Users\\Ian\\OneDrive\\Documents\\VirtualLab\\VirtualLab.db";
+        connectionString = "Data Source = C:\\Users\\Ian\\OneDrive\\Documents\\VirtualLab\\VirtualLab.db";
         Display();
-
-
-
-
-
     }
-    void Update() {
+    void Update() 
+    {
     }
-    public void Display() {
+    public void Display() 
+    {
 
         dropdownSection.ClearOptions();
-        string conn = "URI=file:" + Application.streamingAssetsPath + "/Database/" + "/VirtualDB.db"; //path to database, will read anything inside assets
+        //string conn = "URI=file:" + Application.streamingAssetsPath + "/Database/" + "/VirtualDB.db"; //path to database, will read anything inside assets
         IDbConnection dbconn;//established a connection
-        dbconn = (IDbConnection)new SqliteConnection(conn);
+        dbconn = (IDbConnection)new SqliteConnection(connectionString);
         dbconn.Open(); //open connection to the database
         IDbCommand dbcmd = dbconn.CreateCommand();
 
@@ -57,8 +57,18 @@ public class DropdownSections : MonoBehaviour
         dropdownSection.onValueChanged.AddListener(delegate { DropdownItemSelected(dropdownSection); });
     }
 
-    public void DropdownItemSelected(TMP_Dropdown dropdown) {//---------------Section;
-        index = dropdown.value;
-        SelectedSection = dropdown.options[index].text;
+    public void DropdownItemSelected(TMP_Dropdown dropdown)
+    {//---------------Section;
+        try
+        {
+            index = dropdown.value;
+            SelectedSection = dropdown.options[index].text;
+        }
+        catch (Exception ex)
+        {
+            Debug.Log(ex);
+        }
+
+
     }
 }
