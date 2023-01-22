@@ -34,6 +34,16 @@ public class UserManagementScript : MonoBehaviour {
     public TMP_InputField FirstName;
     public TMP_InputField MiddleName;
     public TMP_InputField LastName;
+
+
+    [Header("NEW INPUTFIELD EDIT")]
+    public TMP_InputField newUserID;
+    public TMP_InputField newUserName;
+    public DropdownSections newSection;
+    public TMP_InputField newFirstName;
+    public TMP_InputField newMiddleName;
+    public TMP_InputField newLastName;
+
     [Header("INPUTFIELD SECTIONS")]
     public TMP_InputField IFieldSections;
 
@@ -382,9 +392,21 @@ public class UserManagementScript : MonoBehaviour {
             dbConnection.Close();
         }
     }
-    public void SelectStudent()
+    public void UpdateStudentAcc()
     {
-
+        string newSec = newSection.SelectedSection;
+        using (IDbConnection dbConnection = new SqliteConnection(connectionString))
+        {
+            dbConnection.Open();
+            using (IDbCommand dbCmd = dbConnection.CreateCommand())
+            {
+                // insert to archive table
+                sqlQuery = "UPDATE StudentsTBL SET StudentID = '"+newUserID.text+"', Username = '"+newUserName.text+"', Section = '"+newSec+"', Firstname = '"+newFirstName.text +"', Middlename = '"+newMiddleName.text +"', Lastname = '"+newLastName.text +"' WHERE StudentID = '"+currStudentData.id+"';";
+                dbCmd.CommandText = sqlQuery;
+                dbCmd.ExecuteNonQuery();
+            }
+            dbConnection.Close();
+        }
     }
     public void Clear() {
         UserID.text = "";

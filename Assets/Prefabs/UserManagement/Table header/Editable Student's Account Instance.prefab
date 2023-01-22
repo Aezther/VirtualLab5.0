@@ -1080,13 +1080,6 @@ MonoBehaviour:
   middlenameTM: {fileID: 5916854662334362818}
   lastnameTM: {fileID: 5916854660696056401}
   sectionTM: {fileID: 5916854662276825210}
-  id: 
-  username: 
-  password: 
-  firstname: 
-  middlename: 
-  lastname: 
-  section: 
 --- !u!1 &5916854661389485580
 GameObject:
   m_ObjectHideFlags: 0
