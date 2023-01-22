@@ -53,8 +53,11 @@ public class UserManagementScript : MonoBehaviour {
     [Header("NOTIFICATIONS")]
     public GameObject SucessfulAccountCreation;
 
-    [Header("NOTIFICATIONS")]
+    [Header("Section")]
     [SerializeField] string selSec;
+
+    [Header("Student")]
+    [SerializeField] StudentArchiveData currStudentData;
 
     private string connectionString;
     private string sqlQuery;
@@ -325,6 +328,64 @@ public class UserManagementScript : MonoBehaviour {
         }
     }
 
+    public void DeactivateStudentAcc()
+    {
+        using (IDbConnection dbConnection = new SqliteConnection(connectionString))
+        {
+            dbConnection.Open();
+            using (IDbCommand dbCmd = dbConnection.CreateCommand())
+            {
+                // insert to archive table
+                sqlQuery = "INSERT INTO StudentsArchiveTBL (StudentID, Username, Password,Firstname, Middlename, Lastname, Section) VALUES ( '" +
+                        currStudentData.id+ "','" +
+                        currStudentData.username + "','" +
+                        currStudentData.password + "','" +
+                        currStudentData.firstname + "','" +
+                        currStudentData.middlename + "','" +
+                        currStudentData.lastname + "','" +
+                        currStudentData.section + "');";
+                dbCmd.CommandText = sqlQuery;
+                dbCmd.ExecuteNonQuery();
+
+                //delete from table
+                sqlQuery = "DELETE FROM StudentsTBL WHERE StudentID = '" + currStudentData.id + "';";
+                dbCmd.CommandText = sqlQuery;
+                dbCmd.ExecuteNonQuery();
+            }
+            dbConnection.Close();
+        }
+    }
+    public void ReactivateStudentAcc()
+    {
+        using (IDbConnection dbConnection = new SqliteConnection(connectionString))
+        {
+            dbConnection.Open();
+            using (IDbCommand dbCmd = dbConnection.CreateCommand())
+            {
+                // insert to archive table
+                sqlQuery = "INSERT INTO StudentsTBL (StudentID, Username, Password,Firstname, Middlename, Lastname, Section) VALUES ( '" +
+                        currStudentData.id + "','" +
+                        currStudentData.username + "','" +
+                        currStudentData.password + "','" +
+                        currStudentData.firstname + "','" +
+                        currStudentData.middlename + "','" +
+                        currStudentData.lastname + "','" +
+                        currStudentData.section + "');";
+                dbCmd.CommandText = sqlQuery;
+                dbCmd.ExecuteNonQuery();
+
+                //delete from table
+                sqlQuery = "DELETE FROM StudentsArchiveTBL WHERE StudentID = '" + currStudentData.id + "';";
+                dbCmd.CommandText = sqlQuery;
+                dbCmd.ExecuteNonQuery();
+            }
+            dbConnection.Close();
+        }
+    }
+    public void SelectStudent()
+    {
+
+    }
     public void Clear() {
         UserID.text = "";
         UserName.text = "";
