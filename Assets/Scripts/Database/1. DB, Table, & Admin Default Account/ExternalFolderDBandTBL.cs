@@ -13,14 +13,18 @@ public class ExternalFolderDBandTBL : MonoBehaviour
     void Start()
     {
         //connectionString = "Data Source = C:\\Users\\Ian\\OneDrive\\Documents\\VirtualLab\\VirtualLab.db";
-        connectionString = "Data Source = C:\\Users\\Ian\\OneDrive\\Documents\\VirtualLab\\VirtualLab.db";
+        connectionString = "Data Source = C:\\Users\\oliva\\Documents\\VirtualLab\\VirtualLab.db";
 
         CreateFolder();
         CreateDB();
         CreateAdminAccTBL();
         CreateTeachersTBL();
+        
         CreateSectionsTBL();
+        CreateArchiveSectionsTBL();
+
         CreateStudentsTBL();
+        CreateStudentsArchiveTBL();
         CreateStudentsSessionsTBL();
         CreateTeachersSessionsTBL();
         CreateScoresTBL();
@@ -51,8 +55,8 @@ public class ExternalFolderDBandTBL : MonoBehaviour
             }
             dbConnection.Close();
         }
-    }
-        public void CreateStudentsTBL(){
+     }
+    public void CreateStudentsTBL(){
         using (IDbConnection dbConnection = new SqliteConnection(connectionString)) {
             dbConnection.Open();
             using (IDbCommand dbCmd = dbConnection.CreateCommand()) {
@@ -61,6 +65,24 @@ public class ExternalFolderDBandTBL : MonoBehaviour
                 sqlQuery = "CREATE TABLE IF NOT EXISTS StudentsTBL (StudentID TEXT PRIMARY KEY, Username text NOT NULL, Password text NOT NULL" +
                 ", Firstname text NOT NULL, Middlename text NOT NULL, Lastname text NOT NULL, Section text NOT NULL);";
                 Debug.Log("Students Table Created!");
+                dbCmd.CommandText = sqlQuery;
+                dbCmd.ExecuteNonQuery();
+            }
+            dbConnection.Close();
+        }
+    }
+
+    public void CreateStudentsArchiveTBL()
+    {
+        using (IDbConnection dbConnection = new SqliteConnection(connectionString))
+        {
+            dbConnection.Open();
+            using (IDbCommand dbCmd = dbConnection.CreateCommand())
+            {
+
+
+                sqlQuery = "CREATE TABLE IF NOT EXISTS StudentsArchiveTBL (StudentsArchiveID INTEGER PRIMARY KEY AUTOINCREMENT, StudentID TEXT, Username text NOT NULL, Password TEXT NOT NULL, Firstname TEXT NOT NULL, Middlename TEXT NOT NULL, Lastname TEXT NOT NULL, Section TEXT NOT NULL);";
+                Debug.Log("Students Archive Table Created!");
                 dbCmd.CommandText = sqlQuery;
                 dbCmd.ExecuteNonQuery();
             }
@@ -89,6 +111,24 @@ public class ExternalFolderDBandTBL : MonoBehaviour
 
                             
                 sqlQuery = "CREATE TABLE IF NOT EXISTS SectionsTBL (SectionID INTEGER PRIMARY KEY AUTOINCREMENT, Sections text NOT NULL UNIQUE);";
+                Debug.Log("Sections Table Created!");
+                dbCmd.CommandText = sqlQuery;
+                dbCmd.ExecuteNonQuery();
+            }
+            dbConnection.Close();
+        }
+    }
+
+    public void CreateArchiveSectionsTBL()
+    {
+        using (IDbConnection dbConnection = new SqliteConnection(connectionString))
+        {
+            dbConnection.Open();
+            using (IDbCommand dbCmd = dbConnection.CreateCommand())
+            {
+
+
+                sqlQuery = "CREATE TABLE IF NOT EXISTS SectionsArchiveTBL (SectionID INTEGER PRIMARY KEY AUTOINCREMENT, Sections text NOT NULL);";
                 Debug.Log("Sections Table Created!");
                 dbCmd.CommandText = sqlQuery;
                 dbCmd.ExecuteNonQuery();
