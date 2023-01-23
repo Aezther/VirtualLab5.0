@@ -26,9 +26,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Dashboard/5. Simulations.unity
     guid: 274400d3dcb760b44877c497fc6211fe
-  - enabled: 1
-    path: Assets/Scenes/Dashboard/Teacher/4. Teacher UserManagement.unity
-    guid: bf4a70bbb461fc44dbefe2ca838851db
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/Scenes/Lessons/Distance and Displacement Lesson.unity
     guid: c3b40a3b16fe0484fa9e5056c61f1aa2
@@ -70,9 +70,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Dashboard/Backup/4. Admin UserManagement 1.unity
     guid: e50534e68ac578c4ea2653fa0e1186bf
-  - enabled: 1
-    path: Assets/Scenes/Dashboard/Teacher/4. New Teacher UserManagement.unity
+  - enabled: 0
+    path: Assets/Scenes/Dashboard/Teacher/4. New Teacher UserManagement (To be deleted).unity
     guid: 4b841e9e629032f45a815ed3b63a59eb
+  - enabled: 1
+    path: Assets/Scenes/Dashboard/Teacher/4. Teacher UserManagement.unity
+    guid: 42967372ccc104043bcddf2f3cbbc3c7
   - enabled: 1
     path: Assets/Scenes/Dashboard/Admin/8. Admin Assessment Records 1.unity
     guid: 96d95fdcde394d6468954db7e2be6a94

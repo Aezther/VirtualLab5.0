@@ -94,17 +94,15 @@ public class UserManagementScript : MonoBehaviour {
         dropdownUserType = DDUserType.GetComponent<DropdownUserType>(); // 3rd 
         dropdownSections = DDSection.GetComponent<DropdownSections>(); // 3rd
 
-        if (SceneManager.GetActiveScene().name == "Admin UserManagement")
-        {
-            dropdownSelectedSection = DDSelectedSection.GetComponent<DropdownSections>(); // 3rd
+        
+        dropdownSelectedSection = DDSelectedSection.GetComponent<DropdownSections>(); // 3rd
 
-        }
 
     }
     void Start() {
 
         connectionString = "Data Source = C:\\Users\\Ian\\OneDrive\\Documents\\VirtualLab\\VirtualLab.db";
-        connectionString = "Data Source = C:\\Users\\oliva\\Documents\\VirtualLab\\VirtualLab.db";
+        //connectionString = "Data Source = C:\\Users\\oliva\\Documents\\VirtualLab\\VirtualLab.db";
 
 
     }

@@ -2131,7 +2131,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 1193704499}
         m_TargetAssemblyTypeName: FadeSceneChanger, Assembly-CSharp
-        m_MethodName: TeacherMenuToTeacherUserManagement
+        m_MethodName: MainMenuToNewUserManagement
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

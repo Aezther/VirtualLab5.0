@@ -57,13 +57,10 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     { 
-        if (SceneManager.GetActiveScene().name == "Admin UserManagement")
-        {
             newUsername.text = IDinput.text + "." + lastNameInput.text;
+            if(SceneManager.GetActiveScene().name == "4. Admin UserManagement"){
             newTchUsername.text = tchIDinput.text + "." + tchlastNameInput.text;
-        }
-
-
+            }
     }
 
 
