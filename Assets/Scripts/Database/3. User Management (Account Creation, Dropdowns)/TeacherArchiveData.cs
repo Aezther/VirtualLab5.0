@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 
 [CreateAssetMenu]
-public class StudentArchiveData : ScriptableObject
+public class TeacherArchiveData : ScriptableObject
 {
     [Header("Accessible strings")]
 
@@ -14,5 +14,5 @@ public class StudentArchiveData : ScriptableObject
     public string firstname;
     public string middlename;
     public string lastname;
-    public string section;
+
 }

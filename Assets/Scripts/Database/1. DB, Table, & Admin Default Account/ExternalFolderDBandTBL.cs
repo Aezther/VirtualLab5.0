@@ -19,7 +19,8 @@ public class ExternalFolderDBandTBL : MonoBehaviour
         CreateDB();
         CreateAdminAccTBL();
         CreateTeachersTBL();
-        
+        CreateTeachersArchiveTBL();
+
         CreateSectionsTBL();
         CreateArchiveSectionsTBL();
 
@@ -100,6 +101,23 @@ public class ExternalFolderDBandTBL : MonoBehaviour
                 sqlQuery = "CREATE TABLE IF NOT EXISTS TeachersTBL (TeacherID TEXT PRIMARY KEY, Username text NOT NULL, Password text NOT NULL" +
                 ", Firstname text NOT NULL, Middlename text NOT NULL, Lastname text NOT NULL);";
                 Debug.Log("Teachers Table Created!");
+                dbCmd.CommandText = sqlQuery;
+                dbCmd.ExecuteNonQuery();
+            }
+            dbConnection.Close();
+        }
+    }
+    public void CreateTeachersArchiveTBL()
+    {
+        using (IDbConnection dbConnection = new SqliteConnection(connectionString))
+        {
+            dbConnection.Open();
+            using (IDbCommand dbCmd = dbConnection.CreateCommand())
+            {
+
+
+                sqlQuery = "CREATE TABLE IF NOT EXISTS TeachersArchiveTBL (TeachersArchiveID INTEGER PRIMARY KEY AUTOINCREMENT, TeacherID TEXT, Username text NOT NULL, Password TEXT NOT NULL, Firstname TEXT NOT NULL, Middlename TEXT NOT NULL, Lastname TEXT NOT NULL);";
+                Debug.Log("Teacher Archive Table Created!");
                 dbCmd.CommandText = sqlQuery;
                 dbCmd.ExecuteNonQuery();
             }
