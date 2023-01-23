@@ -5,15 +5,18 @@ using Mono.Data.Sqlite;
 using System.Data;
 using System.IO;
 using TMPro;
+using UnityEngine.UI;
 
 public class ActivateDeactivateLesson : MonoBehaviour
 {
     private string connectionString;
     private string sqlQuery;
+
     void Start()
     {
         connectionString = "Data Source = C:\\Users\\Ian\\OneDrive\\Documents\\VirtualLab\\VirtualLab.db";
     }
+    
 
     public void setTOFDisabled(){
         using (IDbConnection dbConnection = new SqliteConnection(connectionString)) {

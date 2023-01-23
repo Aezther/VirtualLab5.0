@@ -83,6 +83,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Simulations/Types of Fault/Scenes/TypeOfFaultSim.unity
     guid: 605ad41a90029754d9e1a34845e91015
   - enabled: 1
+    path: Assets/Scenes/Dashboard/Teacher/Lesson Management.unity
+    guid: d904115b73e560545b0bdca0e6e62f92
+  - enabled: 1
     path: Assets/Scenes/Simulations/Farm/Scenes [D_D]/Distance and Displacement.unity
     guid: 027a2186b0924ad4d810967e490c5e68
   m_configObjects: {}

@@ -140,6 +140,13 @@ public class FadeSceneChanger : MonoBehaviour
     public void AdminAssessmentRecordsToMainMenu(){
         StartCoroutine(LoadScenes("6. Admin Dashboard"));
     }
+    public void LessonManagementToMainMenu(){
+        StartCoroutine(LoadScenes("3. TeacherDashboard"));
+    }
+    
+    public void MainMenuToLessonManagement(){
+        StartCoroutine(LoadScenes("Lesson Management"));
+    }
     IEnumerator LoadScenes(string SceneIndex) //To control the speed of the transition
     {
         //play the animation using trigger
