@@ -36,13 +36,20 @@ public class UserManagementScript : MonoBehaviour {
     public TMP_InputField LastName;
 
 
-    [Header("NEW INPUTFIELD EDIT")]
+    [Header("STUDENT NEW INPUTFIELD EDIT")]
     public TMP_InputField newUserID;
     public TMP_InputField newUserName;
     public DropdownSections newSection;
     public TMP_InputField newFirstName;
     public TMP_InputField newMiddleName;
     public TMP_InputField newLastName;
+
+    [Header("TEACHER NEW INPUTFIELD EDIT")]
+    public TMP_InputField newTchUserID;
+    public TMP_InputField newTchUserName;
+    public TMP_InputField newTchFirstName;
+    public TMP_InputField newTchMiddleName;
+    public TMP_InputField newTchLastName;
 
     [Header("INPUTFIELD SECTIONS")]
     public TMP_InputField IFieldSections;
@@ -68,6 +75,9 @@ public class UserManagementScript : MonoBehaviour {
 
     [Header("Student")]
     [SerializeField] StudentArchiveData currStudentData;
+
+    [Header("Teacher")]
+    [SerializeField] TeacherArchiveData currTeacherData;
 
     private string connectionString;
     private string sqlQuery;
@@ -402,6 +412,75 @@ public class UserManagementScript : MonoBehaviour {
             {
                 // insert to archive table
                 sqlQuery = "UPDATE StudentsTBL SET StudentID = '"+newUserID.text+"', Username = '"+newUserName.text+"', Section = '"+newSec+"', Firstname = '"+newFirstName.text +"', Middlename = '"+newMiddleName.text +"', Lastname = '"+newLastName.text +"' WHERE StudentID = '"+currStudentData.id+"';";
+                dbCmd.CommandText = sqlQuery;
+                dbCmd.ExecuteNonQuery();
+            }
+            dbConnection.Close();
+        }
+    }
+
+    public void DeactivateTeacherAcc()
+    {
+        using (IDbConnection dbConnection = new SqliteConnection(connectionString))
+        {
+            dbConnection.Open();
+            using (IDbCommand dbCmd = dbConnection.CreateCommand())
+            {
+                // insert to archive table
+                sqlQuery = "INSERT INTO TeachersArchiveTBL (TeacherID, Username, Password,Firstname, Middlename, Lastname) VALUES ( '" +
+                        currTeacherData.id + "','" +
+                        currTeacherData.username + "','" +
+                        currTeacherData.password + "','" +
+                        currTeacherData.firstname + "','" +
+                        currTeacherData.middlename + "','" +
+                        currTeacherData.lastname + "');";
+                dbCmd.CommandText = sqlQuery;
+                dbCmd.ExecuteNonQuery();
+
+                //delete from table
+                sqlQuery = "DELETE FROM TeachersTBL WHERE TeacherID = '" + currTeacherData.id + "';";
+                dbCmd.CommandText = sqlQuery;
+                dbCmd.ExecuteNonQuery();
+            }
+            dbConnection.Close();
+        }
+    }
+    public void ReactivateTeacherAcc()
+    {
+        using (IDbConnection dbConnection = new SqliteConnection(connectionString))
+        {
+            dbConnection.Open();
+            using (IDbCommand dbCmd = dbConnection.CreateCommand())
+            {
+                // insert to archive table
+                sqlQuery = "INSERT INTO TeachersTBL (TeacherID, Username, Password,Firstname, Middlename, Lastname) VALUES ( '" +
+                        currTeacherData.id + "','" +
+                        currTeacherData.username + "','" +
+                        currTeacherData.password + "','" +
+                        currTeacherData.firstname + "','" +
+                        currTeacherData.middlename + "','" +
+                        currTeacherData.lastname + "');";
+                dbCmd.CommandText = sqlQuery;
+                dbCmd.ExecuteNonQuery();
+
+                //delete from table
+                sqlQuery = "DELETE FROM TeachersArchiveTBL WHERE TeacherID = '" + currTeacherData.id + "';";
+                dbCmd.CommandText = sqlQuery;
+                dbCmd.ExecuteNonQuery();
+            }
+            dbConnection.Close();
+        }
+    }
+    public void UpdateTeacherAcc()
+    {
+        string newSec = newSection.SelectedSection;
+        using (IDbConnection dbConnection = new SqliteConnection(connectionString))
+        {
+            dbConnection.Open();
+            using (IDbCommand dbCmd = dbConnection.CreateCommand())
+            {
+                // insert to archive table
+                sqlQuery = "UPDATE TeachersTBL SET TeacherID = '" + newTchUserID.text + "', Username = '" + newTchUserName.text + "', Firstname = '" + newTchFirstName.text + "', Middlename = '" + newTchMiddleName.text + "', Lastname = '" + newTchLastName.text + "' WHERE TeacherID = '" + currTeacherData.id + "';";
                 dbCmd.CommandText = sqlQuery;
                 dbCmd.ExecuteNonQuery();
             }

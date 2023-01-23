@@ -23,7 +23,7 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] Button[] lessonButtonsList;
 
-    [Header("Edit User Reference")]
+    [Header("Edit Student User Reference")]
     [SerializeField] StudentArchiveData currStudent;
 
     [SerializeField] TextMeshProUGUI[] editRefDisplay;
@@ -31,6 +31,15 @@ public class UIManager : MonoBehaviour
     [SerializeField] TMP_InputField newUsername;
     [SerializeField] TMP_InputField IDinput;
     [SerializeField] TMP_InputField lastNameInput;
+
+    [Header("Edit Teacher User Reference")]
+    [SerializeField] TeacherArchiveData currTeacher;
+
+    [SerializeField] TextMeshProUGUI[] editTeachRefDisplay;
+
+    [SerializeField] TMP_InputField newTchUsername;
+    [SerializeField] TMP_InputField tchIDinput;
+    [SerializeField] TMP_InputField tchlastNameInput;
 
     [SerializeField] TMP_InputField[] InputFieldsList;
 
@@ -49,6 +58,8 @@ public class UIManager : MonoBehaviour
     { 
         
         newUsername.text = IDinput.text+"."+lastNameInput.text;
+        newTchUsername.text = tchIDinput.text + "." + tchlastNameInput.text;
+
     }
 
 
@@ -98,6 +109,15 @@ public class UIManager : MonoBehaviour
        editRefDisplay[3].text = currStudent.firstname;
        editRefDisplay[4].text = currStudent.middlename;
        editRefDisplay[5].text = currStudent.lastname;
+    }
+
+    public void DisplayTeacherRefUserValues()
+    {
+        editTeachRefDisplay[0].text = currTeacher.id;
+        editTeachRefDisplay[1].text = currTeacher.username;
+        editTeachRefDisplay[2].text = currTeacher.firstname;
+        editTeachRefDisplay[3].text = currTeacher.middlename;
+        editTeachRefDisplay[4].text = currTeacher.lastname;
     }
 
     public void ClearInputfields()
