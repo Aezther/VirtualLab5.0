@@ -13,6 +13,8 @@ using System.Xml.Linq;
 using System.Text.RegularExpressions;
 using static System.Collections.Specialized.BitVector32;
 using UnityEngine.Assertions;
+using UnityEngine.SceneManagement;
+using UnityEngine.Windows;
 
 public class UserManagementScript : MonoBehaviour {
     DropdownUserType dropdownUserType; //empty script reference. 1st
@@ -91,7 +93,12 @@ public class UserManagementScript : MonoBehaviour {
     void Awake() { //INITIALIZING REFERENCES TO ACCESS SCRIPTS IN ANOTHER OBJECT
         dropdownUserType = DDUserType.GetComponent<DropdownUserType>(); // 3rd 
         dropdownSections = DDSection.GetComponent<DropdownSections>(); // 3rd
-        dropdownSelectedSection = DDSelectedSection.GetComponent<DropdownSections>(); // 3rd
+
+        if (SceneManager.GetActiveScene().name == "Admin UserManagement")
+        {
+            dropdownSelectedSection = DDSelectedSection.GetComponent<DropdownSections>(); // 3rd
+
+        }
 
     }
     void Start() {

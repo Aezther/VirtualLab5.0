@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 using Button = UnityEngine.UI.Button;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
@@ -56,9 +57,12 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     { 
-        
-        newUsername.text = IDinput.text+"."+lastNameInput.text;
-        newTchUsername.text = tchIDinput.text + "." + tchlastNameInput.text;
+        if (SceneManager.GetActiveScene().name == "Admin UserManagement")
+        {
+            newUsername.text = IDinput.text + "." + lastNameInput.text;
+            newTchUsername.text = tchIDinput.text + "." + tchlastNameInput.text;
+        }
+
 
     }
 
