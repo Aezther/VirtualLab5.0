@@ -12,8 +12,8 @@ public class ExternalFolderDBandTBL : MonoBehaviour
     private string sqlQuery;
     void Start()
     {
-        //connectionString = "Data Source = C:\\Users\\Ian\\OneDrive\\Documents\\VirtualLab\\VirtualLab.db";
-        connectionString = "Data Source = C:\\Users\\oliva\\Documents\\VirtualLab\\VirtualLab.db";
+        connectionString = "Data Source = C:\\Users\\Ian\\OneDrive\\Documents\\VirtualLab\\VirtualLab.db";
+        //connectionString = "Data Source = C:\\Users\\oliva\\Documents\\VirtualLab\\VirtualLab.db";
 
         CreateFolder();
         CreateDB();
@@ -30,6 +30,8 @@ public class ExternalFolderDBandTBL : MonoBehaviour
         CreateScoresTBL();
         CreateSecurityQuestionsTeachersTBL();
         CreateSecurityQuestionsStudentsTBL();
+
+        CreateLessonsTBL();
     }
         public void CreateFolder(){
         Directory.CreateDirectory(folderPath);  
@@ -201,6 +203,21 @@ public class ExternalFolderDBandTBL : MonoBehaviour
 
                 sqlQuery = "CREATE TABLE IF NOT EXISTS SecurityQuestionsStudentsTBL (SecurityQuestionStudentID INTEGER PRIMARY KEY AUTOINCREMENT, Question text, Answer text, StudentID TEXT, FOREIGN KEY (StudentID) REFERENCES StudentsTBL (StudentID));";
                 Debug.Log("Student Security Question Table Created!");
+                dbCmd.CommandText = sqlQuery;
+                dbCmd.ExecuteNonQuery();
+            }
+            dbConnection.Close();
+        }
+    }
+
+    public void CreateLessonsTBL(){
+        using (IDbConnection dbConnection = new SqliteConnection(connectionString)) {
+            dbConnection.Open();
+            using (IDbCommand dbCmd = dbConnection.CreateCommand()) {
+
+                            
+                sqlQuery = "CREATE TABLE IF NOT EXISTS LessonsTBL (LessonID INTEGER PRIMARY KEY AUTOINCREMENT, LessonName text NOT NULL UNIQUE, LessonStatus text NOT NULL);";
+                Debug.Log("Lesson's Table Created!");
                 dbCmd.CommandText = sqlQuery;
                 dbCmd.ExecuteNonQuery();
             }
